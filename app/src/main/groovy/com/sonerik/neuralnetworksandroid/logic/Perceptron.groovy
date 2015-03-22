@@ -20,19 +20,21 @@ class Perceptron {
 
     double calculateExit(List<Double> enters) {
         def exit = 0.0d
-        enters.eachWithIndex { enter, int i ->
-            exit += enter * weights[i]
+
+        (enters.size() as Number).times { int i ->
+            exit += enters[i] * weights[i]
         }
+
         return (exit >= 0.5)? 1.0d : 0.0d
     }
 
     int study() {
         def epochs = 0
         while(true) {
-            def lastWeights = weights.clone()
+            def lastWeights = weights.clone() as List<Double>
             def epochError = studyEpoch()
             epochs++
-            if (lastWeights.equals(weights) || epochError == 0 || epochs > maxEpochs) break
+            if (lastWeights.equals(weights) || epochError == 0d || epochs > maxEpochs) break
         }
         epochs
     }
@@ -44,7 +46,8 @@ class Perceptron {
             def exit = calculateExit(enters)
             def error = pattern[-1] - exit
             globalError += Math.abs(error as double)
-            weights.eachWithIndex { weight, int i ->
+
+            (weights.size() as Number).times { int i ->
                 weights[i] += learningRate * error * enters[i]
             }
         }
