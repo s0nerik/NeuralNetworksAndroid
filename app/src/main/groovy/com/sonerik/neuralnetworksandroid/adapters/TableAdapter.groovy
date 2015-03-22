@@ -41,6 +41,7 @@ public class TableAdapter extends RecyclerView.Adapter<ViewHolder> {
                 item.visibility = View.GONE
             }
         }
+        viewHolder.itemView.backgroundResource = i % 2 ? R.color.md_grey_100 : R.color.md_grey_300
     }
 
     @Override
