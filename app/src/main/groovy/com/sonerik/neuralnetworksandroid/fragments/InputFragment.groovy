@@ -1,6 +1,6 @@
 package com.sonerik.neuralnetworksandroid.fragments
-
 import android.os.Bundle
+import android.os.Handler
 import android.support.annotation.Nullable
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -53,7 +53,18 @@ public class InputFragment extends Fragment {
         childFragmentManager.beginTransaction()
                 .replace(R.id.container, TableFragment.newFragment(tableData as ArrayList))
                 .commit()
-        fab.show()
+        fab.hide()
+    }
+
+    @Override
+    void onResume() {
+        super.onResume()
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            void run() {
+                fab.show()
+            }
+        }, 500)
     }
 
     @OnClick(R.id.action_button)

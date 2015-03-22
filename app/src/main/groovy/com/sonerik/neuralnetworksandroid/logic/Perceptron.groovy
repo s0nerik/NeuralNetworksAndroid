@@ -5,10 +5,6 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class Perceptron {
 
-//    def patterns = new JsonSlurper().parse(new File("input.json")).patterns
-//    def statement = new File('input.txt').readLines().find {!it.startsWith("#")}
-//    def patterns = new StatementParser().generateTable(statement)
-
     List<List<Double>> patterns
 
     List<Double> enters = (0..<(patterns[0].size() - 1)).collect { 0.0 as Double }
