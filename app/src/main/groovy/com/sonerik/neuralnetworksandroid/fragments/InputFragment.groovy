@@ -22,7 +22,7 @@ import com.sonerik.neuralnetworksandroid.adapters.TableAdapter
 import groovy.transform.CompileStatic
 
 @CompileStatic
-public class MainFragment extends Fragment {
+public class InputFragment extends Fragment {
 
     List tableData
 
