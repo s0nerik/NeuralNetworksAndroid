@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="48dp">
+
+    <TextView
+        android:id="@+id/text0"
+        tools:text="Text"
+        style="@style/item_table" />
+
+    <TextView
+        android:id="@+id/text1"
+        tools:text="Text"
+        style="@style/item_table" />
+
+    <TextView
+        android:id="@+id/text2"
+        tools:text="Text"
+        style="@style/item_table" />
+
+    <TextView
+        android:id="@+id/text3"
+        tools:text="Text"
+        style="@style/item_table" />
+
+    <TextView
+        android:id="@+id/text4"
+        tools:text="Text"
+        style="@style/item_table" />
+
+    <TextView
+        android:id="@+id/text5"
+        tools:text="Text"
+        style="@style/item_table" />
+
+    <TextView
+        android:id="@+id/text6"
+        tools:text="Text"
+        style="@style/item_table" />
+
+    <TextView
+        android:id="@+id/text7"
+        tools:text="Text"
+        style="@style/item_table" />
+
+    <TextView
+        android:id="@+id/text8"
+        tools:text="Text"
+        style="@style/item_table" />
+
+    <TextView
+        android:id="@+id/text9"
+        tools:text="Text"
+        style="@style/item_table" />
+
+</LinearLayout>

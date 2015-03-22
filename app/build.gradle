@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+apply plugin: 'groovyx.grooid.groovy-android'
+
+project.androidGroovy {
+    options {
+        sourceCompatibility = '1.7'
+        targetCompatibility = '1.7'
+    }
+}
+
+repositories {
+    maven { url 'http://raw.github.com/wada811/Android-Material-Design-Colors/master/repository/' }
+}
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.sonerik.neuralnetworksandroid"
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'org.codehaus.groovy:groovy:2.4.1:grooid'
+    compile 'com.android.support:support-v4:21.0.3'
+    compile "com.arasthel:swissknife:1.2.2"
+    compile 'com.android.support:recyclerview-v7:21.0.3'
+    compile 'com.github.shell-software:fab:1.0.5'
+    compile 'com.wada811:android-material-design-colors:2.0.0'
+}
+
+//// add support for Groovy to existing configurations
+//android.applicationVariants.all {
+//    task "groovy${name}Compile"(type: GroovyCompile) {
+//        source = javaCompile.source + fileTree('src/main/java').include('**/*.groovy')
+//        destinationDir = javaCompile.destinationDir
+//        classpath = javaCompile.classpath
+//        groovyClasspath = classpath
+//        sourceCompatibility = '1.6'
+//        targetCompatibility = '1.6'
+//        doFirst {
+//            def runtimeJars = plugins.findPlugin(com.android.build.gradle.AppPlugin).runtimeJars
+//            classpath = files(runtimeJars) + classpath
+//        }
+//    }
+//    javaCompile.dependsOn("groovy${name}Compile")
+//    javaCompile.enabled = false
+//}
