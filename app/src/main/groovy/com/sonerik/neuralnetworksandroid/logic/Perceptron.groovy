@@ -1,36 +1,36 @@
 package com.sonerik.neuralnetworksandroid.logic
 
+import groovy.transform.CompileStatic
+
+@CompileStatic
 class Perceptron {
 
 //    def patterns = new JsonSlurper().parse(new File("input.json")).patterns
 //    def statement = new File('input.txt').readLines().find {!it.startsWith("#")}
 //    def patterns = new StatementParser().generateTable(statement)
 
-    List patterns
+    List<List<Double>> patterns
 
-    def enters = (0..<(patterns[0].size() - 1)).collect { 0.0 }
-    def weights = enters.collect { Math.random() * 0.2 + 0.1 }
+    List<Double> enters = (0..<(patterns[0].size() - 1)).collect { 0.0 as Double }
+    List<Double> weights = enters.collect { Math.random() * 0.2 + 0.1 as Double }
 
-    def learningRate = 0.115
-    def maxEpochs = 10000
-    def hiddenLayers = 1
+    double learningRate = 0.115d
+    int maxEpochs = 100
+    int hiddenLayers = 1
 
-    def Perceptron(def patterns, double learningRate, int maxEpochs, int hiddenLayers) {
+    Perceptron(List patterns) {
         this.patterns = patterns
-        this.learningRate = learningRate
-        this.maxEpochs = maxEpochs
-        this.hiddenLayers = hiddenLayers
     }
 
-    def calculateExit(List<Integer> enters) {
-        def exit = 0.0
-        enters.eachWithIndex { enter, i ->
+    double calculateExit(List<Double> enters) {
+        def exit = 0.0d
+        enters.eachWithIndex { enter, int i ->
             exit += enter * weights[i]
         }
-        return (exit >= 0.5)? 1 : 0
+        return (exit >= 0.5)? 1.0d : 0.0d
     }
 
-    def study() {
+    int study() {
         def epochs = 0
         while(true) {
             def lastWeights = weights.clone()
@@ -41,14 +41,14 @@ class Perceptron {
         epochs
     }
 
-    def studyEpoch() {
-        def globalError = 0.0
-        patterns.each { List<Integer> pattern ->
+    double studyEpoch() {
+        def globalError = 0.0d
+        patterns.each { pattern ->
             enters = pattern[0..-2] // Don't include last element as it contains answer
             def exit = calculateExit(enters)
             def error = pattern[-1] - exit
-            globalError += Math.abs(error)
-            weights.eachWithIndex { weight, i ->
+            globalError += Math.abs(error as double)
+            weights.eachWithIndex { weight, int i ->
                 weights[i] += learningRate * error * enters[i]
             }
         }
@@ -56,21 +56,22 @@ class Perceptron {
         globalError
     }
 
-    def test() {
+    String test() {
         def epochsPassed = study()
-
-        println "Epochs passed: ${epochsPassed}"
-        println "Weights: ${weights}"
-
-        println "Results:"
-        println String.format("%10s %10s %10s", 'Expected', 'Got', 'Verdict')
-
+        def result = """\
+Epochs passed: ${epochsPassed}
+Weights: ${weights}
+Results:
+${String.format("%10s %10s %10s", 'Expected', 'Got', 'Verdict')}
+"""
         patterns.each { List it ->
             def expected = it[-1]
             def got = calculateExit(it[0..-2])
             def verdict = got == expected ? "OK" : "NOT OK"
-            println String.format("%10d %10d %10s", expected, got, verdict)
+            result += String.format("%10f %10f %10s\n", expected, got, verdict)
         }
+
+        result
     }
 
 }

@@ -13,6 +13,7 @@ import com.arasthel.swissknife.annotations.OnClick
 import com.software.shell.fab.ActionButton
 import com.sonerik.neuralnetworksandroid.App
 import com.sonerik.neuralnetworksandroid.R
+import com.sonerik.neuralnetworksandroid.logic.Perceptron
 import groovy.transform.CompileStatic
 
 @CompileStatic
@@ -58,6 +59,14 @@ public class InputFragment extends Fragment {
     @OnClick(R.id.action_button)
     void onFabClicked() {
         Log.d(App.LOG_TAG, "Let's learn!")
+
+        def data = tableData[1..-1].collect { List it ->
+            it.collect { s ->
+                s as float
+            }
+        }
+
+        Log.d(App.LOG_TAG, new Perceptron(data).test())
     }
 
 }

@@ -59,7 +59,6 @@ public class LoadInputFragment extends Fragment {
             }
 
             App.bus.post(new InputLoadedEvent(input: tableData))
-//            recyclerView.adapter = new TableAdapter(activity, tableData)
         }
     }
 }
