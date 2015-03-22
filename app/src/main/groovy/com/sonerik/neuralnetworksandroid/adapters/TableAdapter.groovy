@@ -14,12 +14,12 @@ import groovy.transform.CompileStatic
 public class TableAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     Context context
-    List<String[]> rows
+    List<List> rows
 
     private int width
     private LayoutInflater inflater
 
-    TableAdapter(Context context, List<String[]> rows) {
+    TableAdapter(Context context, List<List> rows) {
         this.context = context
         this.rows = rows
         width = rows[0].size()

@@ -5,18 +5,10 @@
     android:layout_height="match_parent"
     tools:context="com.sonerik.neuralnetworksandroid.fragments.InputFragment">
 
-    <Button
-        android:id="@+id/loadFromCsv"
-        android:text="Load from CSV"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_below="@+id/loadFromCsv"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <com.software.shell.fab.ActionButton
         android:id="@+id/action_button"
@@ -25,7 +17,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/fab_margin"
-        android:tint="#fff"
         android:layout_marginBottom="@dimen/fab_margin"
         app:button_color="?colorPrimary"
         app:button_colorPressed="?colorPrimaryDark"
