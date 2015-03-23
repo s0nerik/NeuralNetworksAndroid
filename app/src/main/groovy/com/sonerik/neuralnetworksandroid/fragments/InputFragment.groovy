@@ -73,11 +73,11 @@ public class InputFragment extends Fragment {
 
         def data = tableData[1..-1].collect { List it ->
             it.collect { s ->
-                s as float
+                s as double
             }
         }
 
-        Network.test().each {
+        Network.test(data).each {
             Log.d(App.LOG_TAG, it)
         }
 //        Log.d(App.LOG_TAG, new __Perceptron(data).test())

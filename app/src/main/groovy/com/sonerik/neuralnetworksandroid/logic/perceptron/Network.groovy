@@ -26,7 +26,7 @@ class Network {
         }
     }
 
-    void train(List<List<Double>> patterns, double learningRate = 0.115d, int maxIterations = 10000) {
+    void train(List<List<Double>> patterns, double learningRate = 0.0115d, int maxIterations = 10000) {
         while (maxIterations > 0) {
             patterns.each {
                 def output = evaluate(it[0..-2])
@@ -72,22 +72,25 @@ class Network {
         network
     }
 
-    static List<String> test() {
-        def network = make(3, 1, 3)
-        List<List<Double>> labeledExamples = [ [0, 0, 0, 1],
-                                               [0, 0, 1, 0],
-                                               [0, 1, 0, 1],
-                                               [0, 1, 1, 0],
-                                               [1, 0, 0, 1],
-                                               [1, 0, 1, 0],
-                                               [1, 1, 0, 1],
-                                               [1, 1, 1, 0]].collect { it.collect { it as double } }
-        network.train(labeledExamples)
+    static List<String> test(List<List<Double>> patterns) {
+        def network = make(patterns[0].size() - 1, 1, patterns[0].size() - 1)
+
+//        def network = make(3, 1, 3)
+//        patterns = [   [0, 0, 0, 1],
+//                       [0, 0, 1, 0],
+//                       [0, 1, 0, 1],
+//                       [0, 1, 1, 0],
+//                       [1, 0, 0, 1],
+//                       [1, 0, 1, 0],
+//                       [1, 1, 0, 1],
+//                       [1, 1, 1, 0]].collect { it.collect { it as double } }
+
+        network.train(patterns)
 
         def output = []
-        labeledExamples.each {
+        patterns.each {
             output << String.format(
-                    "Error for %s is %10.4f. Output was: %10.4f\n",
+                    "Error for %-50s is %-10.4f. Output was: %-10.4f\n",
                     it[0..-2].toString(),
                     it[-1] - network.evaluate(it[0..-2]),
                     network.evaluate(it[0..-2])

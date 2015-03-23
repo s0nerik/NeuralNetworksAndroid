@@ -37,11 +37,10 @@ class Node {
         }
 
         lastOutput = activationFunction(weightedSum)
-        lastOutput
     }
 
     double getError(double desire) {
-        if (error) return error
+//        if (error) return error
 
         assert lastOutput
 
@@ -59,7 +58,7 @@ class Node {
     void updateWeights(double learningRate) {
         if (error && lastOutput && lastInput) {
             incomingEdges.eachWithIndex { Edge edge, int i ->
-                edge.weight += learningRate * lastOutput * (1 - lastOutput) * error * lastInput[i]
+                edge.weight += learningRate * lastOutput * (1d - lastOutput) * error * lastInput[i]
             }
             outgoingEdges.each {
                 it.target.updateWeights(learningRate)
