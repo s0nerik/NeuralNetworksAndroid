@@ -1,9 +1,7 @@
 package com.sonerik.neuralnetworksandroid.fragments
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.support.annotation.Nullable
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -31,10 +29,12 @@ public class LoadInputFragment extends Fragment {
 
     @OnClick([R.id.load_input_text, R.id.load_input_icon])
     void onLoadFromCsvClicked() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        Uri uri = Uri.parse(Environment.externalStorageDirectory.path);
-        intent.setDataAndType(uri, "text/csv");
-        startActivityForResult(Intent.createChooser(intent, "Open folder"), 1337);
+        App.bus.post(new InputLoadedEvent(input: [[0], [1]]))
+
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        Uri uri = Uri.parse(Environment.externalStorageDirectory.path);
+//        intent.setDataAndType(uri, "text/csv");
+//        startActivityForResult(Intent.createChooser(intent, "Open folder"), 1337);
     }
 
     @Override

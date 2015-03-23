@@ -13,7 +13,7 @@ import com.arasthel.swissknife.annotations.OnClick
 import com.software.shell.fab.ActionButton
 import com.sonerik.neuralnetworksandroid.App
 import com.sonerik.neuralnetworksandroid.R
-import com.sonerik.neuralnetworksandroid.logic.Perceptron
+import com.sonerik.neuralnetworksandroid.logic.perceptron.Network
 import groovy.transform.CompileStatic
 
 @CompileStatic
@@ -77,7 +77,10 @@ public class InputFragment extends Fragment {
             }
         }
 
-        Log.d(App.LOG_TAG, new Perceptron(data).test())
+        Network.test().each {
+            Log.d(App.LOG_TAG, it)
+        }
+//        Log.d(App.LOG_TAG, new __Perceptron(data).test())
     }
 
 }
