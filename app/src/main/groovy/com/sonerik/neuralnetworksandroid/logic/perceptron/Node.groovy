@@ -20,9 +20,13 @@ class Node {
         1.0d / (1.0d + Math.exp(-x))
     }
 
-    protected void addBias() {
-        incomingEdges << new Edge(new BiasNode(), this)
+    void addBias(BiasNode biasNode) {
+        incomingEdges << new Edge(biasNode, this)
     }
+
+//    private void addBias() {
+//        incomingEdges << new Edge(new BiasNode(), this)
+//    }
 
     double evaluate(List<Double> inputs) {
 //        if (lastOutput) return lastOutput

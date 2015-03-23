@@ -66,6 +66,20 @@ class Network {
             }
         }
 
+        // Assign bias nodes as inputs for all hidden layers
+        hiddenLayers.each { List<Node> nodes ->
+            def biasNode = new BiasNode()
+            nodes.each { Node node ->
+                node.addBias(biasNode)
+//                new Edge(biasNode, node)
+//                new Edge(biasNode, node)
+            }
+        }
+
+        // Assign BiasNode as input for output node
+        network.outputNode.addBias(new BiasNode())
+//        new Edge(new BiasNode(), network.outputNode)
+
         // Assign last hidden layer nodes as inputs for output node
         hiddenLayers[-1].each { new Edge(it, network.outputNode) }
 

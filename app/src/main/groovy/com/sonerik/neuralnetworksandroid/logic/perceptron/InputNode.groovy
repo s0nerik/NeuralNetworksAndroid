@@ -13,8 +13,8 @@ class InputNode extends Node {
         this.index = index
     }
 
-    @Override
-    protected void addBias() {}
+//    @Override
+//    protected void addBias() {}
 
     @Override
     double evaluate(List<Double> inputs) {
