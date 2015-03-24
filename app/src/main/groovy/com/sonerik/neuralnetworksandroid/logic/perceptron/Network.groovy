@@ -26,7 +26,7 @@ class Network {
         }
     }
 
-    void train(List<List<Double>> patterns, double learningRate = 0.0115d, int maxIterations = 10000) {
+    void train(List<List<Double>> patterns, double learningRate = 0.115d, int maxIterations = 10000) {
         while (maxIterations > 0) {
             patterns.each {
                 def output = evaluate(it[0..-2])
@@ -70,6 +70,7 @@ class Network {
         hiddenLayers.each { List<Node> nodes ->
             def biasNode = new BiasNode()
             nodes.each { Node node ->
+//                node.addBias(new BiasNode())
                 node.addBias(biasNode)
 //                new Edge(biasNode, node)
 //                new Edge(biasNode, node)
@@ -99,15 +100,22 @@ class Network {
 //                       [1, 1, 0, 1],
 //                       [1, 1, 1, 0]].collect { it.collect { it as double } }
 
+        def factor = patterns.max { it[-1] }[-1] // Last item in array with max expected answer
+
+        // Little hack to handle values other than in -1..1 :)
+        patterns = patterns.collectNested { double it -> it / factor }
+
         network.train(patterns)
 
         def output = []
+        output << String.format("| %-72s | %-10s | %-10s | %-10s |", "Input", "Output", "Error", "Expected")
         patterns.each {
             output << String.format(
-                    "Error for %-50s is %-10.4f. Output was: %-10.4f\n",
-                    it[0..-2].toString(),
-                    it[-1] - network.evaluate(it[0..-2]),
-                    network.evaluate(it[0..-2])
+                    "| %-72s | %-10.4f | %-10.4f | %-10.4f |\n",
+                    it[0..-2].collect{ String.format("%-10.4f", it*factor) }.toString(),
+                    (network.evaluate(it[0..-2]))*factor,
+                    (it[-1] - network.evaluate(it[0..-2]))*factor,
+                    it[-1]*factor
             )
         }
 
