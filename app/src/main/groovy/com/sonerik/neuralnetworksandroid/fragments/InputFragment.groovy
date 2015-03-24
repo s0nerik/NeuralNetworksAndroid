@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.arasthel.swissknife.SwissKnife
 import com.arasthel.swissknife.annotations.InjectView
+import com.arasthel.swissknife.annotations.OnBackground
 import com.arasthel.swissknife.annotations.OnClick
+import com.arasthel.swissknife.annotations.OnUIThread
 import com.software.shell.fab.ActionButton
 import com.sonerik.neuralnetworksandroid.App
 import com.sonerik.neuralnetworksandroid.R
@@ -77,10 +79,20 @@ public class InputFragment extends Fragment {
             }
         }
 
-        Network.test(data).each {
+        testNetwork(data)
+    }
+
+    @OnBackground
+    void testNetwork(List<List<Double>> input) {
+        Network.test(input).each {
             Log.d(App.LOG_TAG, it)
         }
-//        Log.d(App.LOG_TAG, new __Perceptron(data).test())
+        networkTestFinished()
+    }
+
+    @OnUIThread
+    void networkTestFinished() {
+        Log.d(App.LOG_TAG, "networkTestFinished")
     }
 
 }
