@@ -59,6 +59,7 @@ class Node {
         /* Update the weights of a node, and all of its successor nodes.
            Assume self is not an InputNode. If the error, lastOutput, and
            lastInput are null, then this node has already been updated. */
+
         if (error && lastOutput && lastInput) {
             incomingEdges.eachWithIndex { Edge edge, int i ->
                 edge.weight += learningRate * lastOutput * (1d - lastOutput) * error * lastInput[i]

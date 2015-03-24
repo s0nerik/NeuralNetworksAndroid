@@ -15,8 +15,7 @@ class InputNode extends Node {
 
     @Override
     Double evaluate(List<Double> inputs) {
-        lastInput = inputs
-        lastOutput = inputs[index]
+        inputs[index]
     }
 
     @Override
