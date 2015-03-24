@@ -8,34 +8,41 @@ class Network {
     List<InputNode> inputNodes
     Node outputNode
 
-    double evaluate(List<Double> inputs) {
+    Double evaluate(List<Double> inputs) {
         assert inputNodes.max {it.index}.index < inputs.size()
 
         outputNode.evaluate(inputs)
     }
 
-    void propagateError(double desired) {
+    void propagateError(Double desired) {
         inputNodes.each {
             it.getError(desired)
         }
     }
 
-    void updateWeights(double learningRate) {
+    void updateWeights(Double learningRate) {
         inputNodes.each {
             it.updateWeights(learningRate)
         }
     }
 
-    void train(List<List<Double>> patterns, double learningRate = 0.115d, int maxIterations = 10000) {
-        while (maxIterations > 0) {
+    int train(List<List<Double>> patterns, Double learningRate = 0.115d, int maxEpochs = 10000, Double maxError = 0.1d) {
+        List<Double> outputs = []
+        int epochsPassed = 0
+        while (epochsPassed < maxEpochs) {
             patterns.each {
-                def output = evaluate(it[0..-2])
+                outputs << evaluate(it[0..-2])
                 propagateError(it[-1])
                 updateWeights(learningRate)
 
-                maxIterations--
+                epochsPassed++
             }
+
+            if (outputs.max() < maxError) break
+
+            outputs.clear()
         }
+        epochsPassed
     }
 
     static Network make(int numInputs, int numHiddenLayers, int numInEachLayer) {
@@ -70,16 +77,12 @@ class Network {
         hiddenLayers.each { List<Node> nodes ->
             def biasNode = new BiasNode()
             nodes.each { Node node ->
-//                node.addBias(new BiasNode())
                 node.addBias(biasNode)
-//                new Edge(biasNode, node)
-//                new Edge(biasNode, node)
             }
         }
 
         // Assign BiasNode as input for output node
         network.outputNode.addBias(new BiasNode())
-//        new Edge(new BiasNode(), network.outputNode)
 
         // Assign last hidden layer nodes as inputs for output node
         hiddenLayers[-1].each { new Edge(it, network.outputNode) }
@@ -88,7 +91,7 @@ class Network {
     }
 
     static List<String> test(List<List<Double>> patterns) {
-        def network = make(patterns[0].size() - 1, 1, patterns[0].size() - 1)
+        def network = make(patterns[0].size() - 1, 2, patterns[0].size() - 1)
 
 //        def network = make(3, 1, 3)
 //        patterns = [   [0, 0, 0, 1],
@@ -98,20 +101,21 @@ class Network {
 //                       [1, 0, 0, 1],
 //                       [1, 0, 1, 0],
 //                       [1, 1, 0, 1],
-//                       [1, 1, 1, 0]].collect { it.collect { it as double } }
+//                       [1, 1, 1, 0]].collect { it.collect { it as Double } }
 
         def factor = patterns.max { it[-1] }[-1] // Last item in array with max expected answer
 
         // Little hack to handle values other than in -1..1 :)
-        patterns = patterns.collectNested { double it -> it / factor }
+        patterns = patterns.collectNested { Double it -> it / factor }
 
-        network.train(patterns)
+        def epochs = network.train(patterns)
 
         def output = []
+        output << "Finished training. It took ${epochs} epochs."
         output << String.format("| %-72s | %-10s | %-10s | %-10s |", "Input", "Output", "Error", "Expected")
         patterns.each {
             output << String.format(
-                    "| %-72s | %-10.4f | %-10.4f | %-10.4f |\n",
+                    "| %-72s | %-10.4f | %-10.4f | %-10.4f |",
                     it[0..-2].collect{ String.format("%-10.4f", it*factor) }.toString(),
                     (network.evaluate(it[0..-2]))*factor,
                     (it[-1] - network.evaluate(it[0..-2]))*factor,

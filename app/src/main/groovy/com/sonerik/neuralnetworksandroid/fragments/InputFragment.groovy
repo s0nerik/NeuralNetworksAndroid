@@ -73,7 +73,7 @@ public class InputFragment extends Fragment {
 
         def data = tableData[1..-1].collect { List it ->
             it.collect { s ->
-                s as double
+                s as Double
             }
         }
 

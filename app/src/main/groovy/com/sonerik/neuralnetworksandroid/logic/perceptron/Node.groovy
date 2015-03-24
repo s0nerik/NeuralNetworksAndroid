@@ -12,10 +12,6 @@ class Node {
     Double lastOutput
     Double error
 
-    Node() {
-//        addBias()
-    }
-
     private static Double activationFunction(Double x) {
         1.0d / (1.0d + Math.exp(-x))
     }
@@ -24,18 +20,16 @@ class Node {
         incomingEdges << new Edge(biasNode, this)
     }
 
-//    private void addBias() {
-//        incomingEdges << new Edge(new BiasNode(), this)
-//    }
+    Double evaluate(List<Double> inputs) {
+        /* Run activation function on a weighted sum of all inputs. */
 
-    double evaluate(List<Double> inputs) {
 //        if (lastOutput) return lastOutput
 
         lastInput = []
-        def weightedSum = 0
+        Double weightedSum = 0d
 
         incomingEdges.each {
-            def theInput = it.source.evaluate(inputs)
+            Double theInput = it.source.evaluate(inputs)
             lastInput << theInput
             weightedSum += it.weight * theInput
         }
@@ -43,23 +37,28 @@ class Node {
         lastOutput = activationFunction(weightedSum)
     }
 
-    double getError(double desire) {
-//        if (error) return error
+    Double getError(Double desiredValue) {
+        /* Get the error for a given node in the network. If the node is an
+           output node, desiredValue will be used to compute the error. For an input node, we
+           simply ignore the error. */
+
+        if (error) return error
 
         assert lastOutput
 
         if (!outgoingEdges) { // Output node
-            error = desire - lastOutput
+            error = desiredValue - lastOutput
         } else {
             error = outgoingEdges.collect {
-                def targetError = it.target.getError(desire)
-                it.weight * targetError
-//                it.weight * it.target.getError(desire)
+                it.weight * it.target.getError(desiredValue)
             }.sum() as Double
         }
     }
 
-    void updateWeights(double learningRate) {
+    void updateWeights(Double learningRate) {
+        /* Update the weights of a node, and all of its successor nodes.
+           Assume self is not an InputNode. If the error, lastOutput, and
+           lastInput are null, then this node has already been updated. */
         if (error && lastOutput && lastInput) {
             incomingEdges.eachWithIndex { Edge edge, int i ->
                 edge.weight += learningRate * lastOutput * (1d - lastOutput) * error * lastInput[i]
@@ -68,8 +67,8 @@ class Node {
                 it.target.updateWeights(learningRate)
             }
             error = null
-            lastInput = null
             lastOutput = null
+            lastInput = null
         }
     }
 

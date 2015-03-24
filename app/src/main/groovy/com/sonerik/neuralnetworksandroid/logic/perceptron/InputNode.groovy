@@ -13,26 +13,23 @@ class InputNode extends Node {
         this.index = index
     }
 
-//    @Override
-//    protected void addBias() {}
-
     @Override
-    double evaluate(List<Double> inputs) {
-        inputs[index]
-//        lastOutput = inputs[index]
+    Double evaluate(List<Double> inputs) {
+        lastInput = inputs
+        lastOutput = inputs[index]
     }
 
     @Override
-    void updateWeights(double learningRate) {
+    void updateWeights(Double learningRate) {
         outgoingEdges.each {
             it.target.updateWeights(learningRate)
         }
     }
 
     @Override
-    double getError(double desire) {
+    Double getError(Double desiredValue) {
         outgoingEdges.each {
-            it.target.getError(desire)
+            it.target.getError(desiredValue)
         }
         0d
     }
