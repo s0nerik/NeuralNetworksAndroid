@@ -1,28 +1,40 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.dd.ShadowLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sonerik.neuralnetworksandroid.fragments.InputFragment">
+    app:sl_dy="2dp"
+    app:sl_shadowColor="#AA000000"
+    app:sl_cornerRadius="2dp">
 
-    <FrameLayout
-        android:id="@+id/container"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        tools:context="com.sonerik.neuralnetworksandroid.fragments.InputFragment">
 
-    <com.software.shell.fab.ActionButton
-        android:id="@+id/action_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/fab_margin"
-        android:layout_marginBottom="@dimen/fab_margin"
-        app:button_color="?colorPrimary"
-        app:button_colorPressed="?colorPrimaryDark"
-        app:image="@drawable/ic_learn"
-        app:image_size="24dp"
-        app:show_animation="@anim/fab_scale_up"
-        />
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-</RelativeLayout>
+        <com.software.shell.fab.ActionButton
+            android:id="@+id/action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            app:button_color="?colorPrimary"
+            app:button_colorPressed="?colorPrimaryDark"
+            app:image="@drawable/ic_learn"
+            app:image_size="24dp"
+            app:show_animation="@anim/fab_scale_up"
+            />
+
+    </RelativeLayout>
+
+</com.dd.ShadowLayout>
