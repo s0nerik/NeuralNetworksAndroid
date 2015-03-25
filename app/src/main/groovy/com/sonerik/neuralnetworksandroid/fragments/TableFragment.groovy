@@ -67,7 +67,7 @@ public class TableFragment extends Fragment {
             view.textColor = Color.WHITE
         }
         tableTitles.visibility = View.VISIBLE
-        tableTitles.backgroundResource = R.color.colorPrimaryDark
+        tableTitles.backgroundResource = R.color.colorAccent
     }
 
 }

@@ -15,6 +15,7 @@ import com.arasthel.swissknife.annotations.OnUIThread
 import com.software.shell.fab.ActionButton
 import com.sonerik.neuralnetworksandroid.App
 import com.sonerik.neuralnetworksandroid.R
+import com.sonerik.neuralnetworksandroid.events.NetworkStudyOver
 import com.sonerik.neuralnetworksandroid.logic.perceptron.Network
 import groovy.transform.CompileStatic
 
@@ -36,22 +37,22 @@ public class InputFragment extends Fragment {
 
     @Override
     void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState)
+        super.onCreate savedInstanceState
         tableData = arguments.getSerializable("table") as List
     }
 
     @Override
     View onCreateView(LayoutInflater inflater,
                       @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState)
-        def v = inflater.inflate(R.layout.fragment_input, container, false)
-        SwissKnife.inject(this, v)
+        super.onCreateView inflater, container, savedInstanceState
+        def v = inflater.inflate R.layout.fragment_input, container, false
+        SwissKnife.inject this, v
         return v
     }
 
     @Override
     void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated view, savedInstanceState
         childFragmentManager.beginTransaction()
                 .replace(R.id.container, TableFragment.newFragment(tableData as ArrayList))
                 .commit()
@@ -71,7 +72,7 @@ public class InputFragment extends Fragment {
 
     @OnClick(R.id.action_button)
     void onFabClicked() {
-        Log.d(App.LOG_TAG, "Let's learn!")
+        Log.d App.LOG_TAG, "Let's learn!"
 
         def data = tableData[1..-1].collect { List it ->
             it.collect { s ->
@@ -79,20 +80,21 @@ public class InputFragment extends Fragment {
             }
         }
 
-        testNetwork(data)
+        testNetwork data
     }
 
     @OnBackground
     void testNetwork(List<List<Double>> input) {
         Network.test(input).each {
-            Log.d(App.LOG_TAG, it)
+            Log.d App.LOG_TAG, it
         }
         networkTestFinished()
     }
 
     @OnUIThread
     void networkTestFinished() {
-        Log.d(App.LOG_TAG, "networkTestFinished")
+        Log.d App.LOG_TAG, "networkTestFinished"
+        App.bus.post new NetworkStudyOver(data: tableData)
     }
 
 }

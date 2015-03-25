@@ -23,18 +23,18 @@ public class LoadInputFragment extends Fragment {
     @Override
     View onCreateView(LayoutInflater inflater,
                       @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState)
-        def v = inflater.inflate(R.layout.fragment_load_input, container, false)
-        SwissKnife.inject(this, v)
+        super.onCreateView inflater, container, savedInstanceState
+        def v = inflater.inflate R.layout.fragment_load_input, container, false
+        SwissKnife.inject this, v
         return v
     }
 
     @OnClick([R.id.load_input_text, R.id.load_input_icon])
     void onLoadFromCsvClicked() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        Uri uri = Uri.parse(Environment.externalStorageDirectory.path);
-        intent.setDataAndType(uri, "text/csv");
-        startActivityForResult(Intent.createChooser(intent, "Open folder"), 1337);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT)
+        Uri uri = Uri.parse Environment.externalStorageDirectory.path
+        intent.setDataAndType uri, "text/csv"
+        startActivityForResult Intent.createChooser(intent, "Open folder"), 1337
     }
 
     @Override
@@ -49,16 +49,16 @@ public class LoadInputFragment extends Fragment {
 
                 tableData = csv
 
-                Log.d(App.LOG_TAG, """
+                Log.d App.LOG_TAG, """
                        |onActivityResult: ${requestCode}
                        |data: ${intent.data}
                        |csv: ${csv}
-                       """.stripMargin())
+                       """.stripMargin()
             } else {
                 tableData = Collections.nCopies(600, 0..6 as List)
             }
 
-            App.bus.post(new InputLoadedEvent(input: tableData))
+            App.bus.post new InputLoadedEvent(input: tableData)
         }
     }
 }
