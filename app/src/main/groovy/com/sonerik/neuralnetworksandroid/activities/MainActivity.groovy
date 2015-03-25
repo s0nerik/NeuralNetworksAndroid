@@ -1,9 +1,11 @@
 package com.sonerik.neuralnetworksandroid.activities
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.Toolbar
-import android.util.Log
+import android.widget.EditText
+import com.afollestad.materialdialogs.MaterialDialog
 import com.arasthel.swissknife.SwissKnife
 import com.arasthel.swissknife.annotations.InjectView
 import com.sonerik.neuralnetworksandroid.App
@@ -15,6 +17,7 @@ import com.sonerik.neuralnetworksandroid.fragments.LoadInputFragment
 import com.sonerik.neuralnetworksandroid.fragments.OutputFragment
 import com.squareup.otto.Subscribe
 import groovy.transform.CompileStatic
+import me.alexrs.prefs.lib.Prefs
 
 @CompileStatic
 public class MainActivity extends FragmentActivity {
@@ -37,6 +40,11 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Override
+    void onEnterAnimationComplete() {
+        super.onEnterAnimationComplete()
+    }
+
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState)
         toolbar.setTitle(R.string.app_name)
@@ -44,7 +52,47 @@ public class MainActivity extends FragmentActivity {
         toolbar.onMenuItemClickListener = {
             switch (it.itemId) {
                 case R.id.action_settings:
-                    Log.d(App.LOG_TAG, "Settings")
+                    def view = layoutInflater.inflate(R.layout.dialog_settings, null)
+
+                    def defaults = [
+                            learningRate: 0.115d,
+                            maxError: 1.0d,
+                            maxEpochs: 10000i,
+                            hiddenLayers: 2i,
+                            nodesEachLayer: 6i
+                    ]
+
+                    def prefs = Prefs.with(applicationContext as Context)
+
+                    defaults.each { key, value ->
+                        def editText = view.findViewById(R.id["settings_${key}"] as int) as EditText
+                        editText.setText((prefs.all[key]?:defaults[key]).toString())
+                    }
+
+                    new MaterialDialog.Builder(this)
+                            .title("Settings")
+                            .customView(view)
+                            .positiveText(android.R.string.ok)
+                            .negativeText(android.R.string.cancel)
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                void onPositive(MaterialDialog dialog) {
+                                    defaults.each { String key, Object value ->
+                                        def editText = view.findViewById(R.id["settings_${key}"] as int) as EditText
+                                        switch (defaults[key].class) {
+                                            case Double:
+                                                prefs.save(key, editText.getText().toFloat())
+                                                break
+                                            case Integer:
+                                                prefs.save(key, editText.getText().toInteger())
+                                                break
+                                        }
+                                    }
+                                }
+                            })
+                            .cancelable(false)
+                            .build()
+                            .show()
                     break
             }
             true

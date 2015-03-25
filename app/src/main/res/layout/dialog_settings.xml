@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/settings_learningRate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Learning rate"
+        app:met_floatingLabel="normal" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/settings_maxError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Max error"
+        app:met_floatingLabel="normal" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/settings_maxEpochs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Max epochs"
+        app:met_floatingLabel="normal" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/settings_hiddenLayers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Hidden layers"
+        app:met_floatingLabel="normal" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/settings_nodesEachLayer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nodes in each layer"
+        app:met_floatingLabel="normal" />
+
+</LinearLayout>

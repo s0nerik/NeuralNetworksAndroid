@@ -11,6 +11,7 @@ project.androidGroovy {
 
 repositories {
     maven { url 'http://raw.github.com/wada811/Android-Material-Design-Colors/master/repository/' }
+    maven { url 'https://oss.sonatype.org/content/groups/public' }
 }
 
 android {
@@ -51,6 +52,8 @@ dependencies {
     compile 'com.github.dmytrodanylyk.shadow-layout:library:1.0.2'
     compile 'com.jpardogo.materialtabstrip:library:1.0.9'
     compile 'com.afollestad:material-dialogs:0.6.5.2'
+    compile 'com.rengwuxian.materialedittext:library:2.0.0-SNAPSHOT'
+    compile 'me.alexrs:prefs:1.0.3'
 }
 
 //// add support for Groovy to existing configurations
