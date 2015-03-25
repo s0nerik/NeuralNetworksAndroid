@@ -1,6 +1,5 @@
 package com.sonerik.neuralnetworksandroid.adapters
 
-import android.support.annotation.NonNull
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
@@ -12,14 +11,16 @@ public class OutputPagerAdapter extends FragmentPagerAdapter {
 
     List table
 
-    List fragments = [
-            TableFragment.newFragment(table as ArrayList),
-            [new Fragment()] * 2
-    ]
+    List fragments
 
     OutputPagerAdapter(FragmentManager fm, List table) {
         super(fm)
         this.table = table
+        fragments = [
+                TableFragment.newFragment(table as ArrayList),
+                new Fragment(),
+                new Fragment()
+        ]
     }
 
     @Override

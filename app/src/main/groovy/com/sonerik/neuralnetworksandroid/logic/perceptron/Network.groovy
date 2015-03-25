@@ -90,8 +90,13 @@ class Network {
         network
     }
 
-    static List<String> test(List<List<Double>> patterns) {
-        def network = make(patterns[0].size() - 1, 2, patterns[0].size() - 1)
+    static List<String> test(List<List<Double>> patterns,
+                             Double learningRate = 0.115d,
+                             int maxEpochs = 100,
+                             Double maxError = 0.1d,
+                             int hiddenLayers = 2i,
+                             int nodesEachLayer = 6i) {
+        def network = make(patterns[0].size() - 1, hiddenLayers, nodesEachLayer)
 
 //        def network = make(3, 1, 3)
 //        patterns = [   [0, 0, 0, 1],
@@ -108,7 +113,7 @@ class Network {
         // Little hack to handle values other than in -1..1 :)
         patterns = patterns.collectNested { Double it -> it / factor }
 
-        def epochs = network.train(patterns)
+        def epochs = network.train(patterns, learningRate, maxEpochs, maxError)
 
         def output = []
         output << "Finished training. It took ${epochs} epochs."

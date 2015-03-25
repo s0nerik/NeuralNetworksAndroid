@@ -18,6 +18,7 @@ import com.sonerik.neuralnetworksandroid.R
 import com.sonerik.neuralnetworksandroid.events.NetworkStudyOver
 import com.sonerik.neuralnetworksandroid.logic.perceptron.Network
 import groovy.transform.CompileStatic
+import me.alexrs.prefs.lib.Prefs
 
 @CompileStatic
 public class InputFragment extends Fragment {
@@ -85,7 +86,14 @@ public class InputFragment extends Fragment {
 
     @OnBackground
     void testNetwork(List<List<Double>> input) {
-        Network.test(input).each {
+        def prefs = Prefs.with(activity)
+        Network.test(input,
+                prefs.getFloat("learningRate", 0.115f) as double,
+                prefs.getInt("maxEpochs", 100),
+                prefs.getFloat("maxError", 1.0f) as double,
+                prefs.getInt("hiddenLayers", 2i),
+                prefs.getInt("nodesEachLayer", 6i)
+        ).each {
             Log.d App.LOG_TAG, it
         }
         networkTestFinished()

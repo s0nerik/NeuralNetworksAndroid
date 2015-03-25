@@ -57,7 +57,7 @@ public class MainActivity extends FragmentActivity {
                     def defaults = [
                             learningRate: 0.115d,
                             maxError: 1.0d,
-                            maxEpochs: 10000i,
+                            maxEpochs: 100i,
                             hiddenLayers: 2i,
                             nodesEachLayer: 6i
                     ]
