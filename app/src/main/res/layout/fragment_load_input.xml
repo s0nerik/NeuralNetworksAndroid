@@ -8,6 +8,7 @@
     <ImageView
         android:id="@+id/load_input_icon"
         android:src="@drawable/ic_file_find"
+        android:tint="@color/md_grey_700"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
