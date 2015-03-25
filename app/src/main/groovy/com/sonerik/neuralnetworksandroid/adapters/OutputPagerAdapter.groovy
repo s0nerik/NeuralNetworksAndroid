@@ -12,6 +12,11 @@ public class OutputPagerAdapter extends FragmentPagerAdapter {
 
     List table
 
+    List fragments = [
+            TableFragment.newFragment(table as ArrayList),
+            [new Fragment()] * 2
+    ]
+
     OutputPagerAdapter(FragmentManager fm, List table) {
         super(fm)
         this.table = table
@@ -19,18 +24,12 @@ public class OutputPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return TableFragment.newFragment(table as ArrayList)
-            default:
-                return new Fragment()
-        }
-        null
+        fragments[position] as Fragment
     }
 
     @Override
     int getCount() {
-        3
+        fragments.size()
     }
 
     @Override
