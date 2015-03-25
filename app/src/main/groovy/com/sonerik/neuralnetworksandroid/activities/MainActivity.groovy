@@ -1,7 +1,10 @@
 package com.sonerik.neuralnetworksandroid.activities
+
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
+import android.view.MenuItem
 import com.arasthel.swissknife.SwissKnife
 import com.arasthel.swissknife.annotations.InjectView
 import com.sonerik.neuralnetworksandroid.App
@@ -36,6 +39,15 @@ public class MainActivity extends FragmentActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState)
         toolbar.setTitle(R.string.app_name)
+        toolbar.inflateMenu(R.menu.main)
+        toolbar.onMenuItemClickListener = {
+            switch (it.itemId) {
+                case R.id.action_settings:
+                    Log.d(App.LOG_TAG, "Settings")
+                    break
+            }
+            true
+        }
         supportFragmentManager.beginTransaction().replace(R.id.container, new LoadInputFragment()).commit()
     }
 
