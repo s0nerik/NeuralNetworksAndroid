@@ -14,19 +14,19 @@ class InputNode extends Node {
     }
 
     @Override
-    Double evaluate(List<Double> inputs) {
+    double evaluate(List<Double> inputs) {
         inputs[index]
     }
 
     @Override
-    void updateWeights(Double learningRate) {
+    void updateWeights(double learningRate) {
         outgoingEdges.each {
             it.target.updateWeights(learningRate)
         }
     }
 
     @Override
-    Double getError(Double desiredValue) {
+    double getError(double desiredValue) {
         outgoingEdges.each {
             it.target.getError(desiredValue)
         }

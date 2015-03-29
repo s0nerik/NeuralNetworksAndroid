@@ -12,7 +12,7 @@ class Node {
     Double lastOutput
     Double error
 
-    private static Double activationFunction(Double x) {
+    private static double activationFunction(double x) {
         1.0d / (1.0d + Math.exp(-x))
     }
 
@@ -20,16 +20,16 @@ class Node {
         incomingEdges << new Edge(biasNode, this)
     }
 
-    Double evaluate(List<Double> inputs) {
+    double evaluate(List<Double> inputs) {
         /* Run activation function on a weighted sum of all inputs. */
 
 //        if (lastOutput) return lastOutput
 
         lastInput = []
-        Double weightedSum = 0d
+        double weightedSum = 0d
 
         incomingEdges.each {
-            Double theInput = it.source.evaluate(inputs)
+            double theInput = it.source.evaluate(inputs)
             lastInput << theInput
             weightedSum += it.weight * theInput
         }
@@ -37,12 +37,12 @@ class Node {
         lastOutput = activationFunction(weightedSum)
     }
 
-    Double getError(Double desiredValue) {
+    double getError(double desiredValue) {
         /* Get the error for a given node in the network. If the node is an
            output node, desiredValue will be used to compute the error. For an input node, we
            simply ignore the error. */
 
-        if (error) return error
+//        if (error) return error
 
         assert lastOutput
 
@@ -55,7 +55,7 @@ class Node {
         }
     }
 
-    void updateWeights(Double learningRate) {
+    void updateWeights(double learningRate) {
         /* Update the weights of a node, and all of its successor nodes.
            Assume self is not an InputNode. If the error, lastOutput, and
            lastInput are null, then this node has already been updated. */

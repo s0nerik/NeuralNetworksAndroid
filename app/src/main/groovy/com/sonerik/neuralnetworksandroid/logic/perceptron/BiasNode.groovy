@@ -6,7 +6,7 @@ import groovy.transform.CompileStatic
 class BiasNode extends InputNode {
 
     @Override
-    Double evaluate(List<Double> inputs) {
+    double evaluate(List<Double> inputs) {
         1.0d
     }
 }
