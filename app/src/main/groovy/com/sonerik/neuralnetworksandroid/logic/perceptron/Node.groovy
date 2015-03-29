@@ -13,7 +13,7 @@ class Node {
     Double error
 
     private static double activationFunction(double x) {
-        1.0d / (1.0d + Math.exp(-x))
+        return 1.0d / (1.0d + Math.exp(-x))
     }
 
     void addBias(BiasNode biasNode) {
@@ -35,6 +35,7 @@ class Node {
         }
 
         lastOutput = activationFunction(weightedSum)
+        return lastOutput
     }
 
     double getError(double desiredValue) {
@@ -42,7 +43,7 @@ class Node {
            output node, desiredValue will be used to compute the error. For an input node, we
            simply ignore the error. */
 
-//        if (error) return error
+        if (error) return error
 
         assert lastOutput
 
@@ -51,8 +52,10 @@ class Node {
         } else {
             error = outgoingEdges.collect {
                 it.weight * it.target.getError(desiredValue)
-            }.sum() as Double
+            }.sum() as double
         }
+
+        return error
     }
 
     void updateWeights(double learningRate) {

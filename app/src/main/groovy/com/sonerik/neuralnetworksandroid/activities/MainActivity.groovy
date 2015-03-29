@@ -110,6 +110,7 @@ public class MainActivity extends FragmentActivity {
     @Subscribe
     void onStudyOver(NetworkStudyOver e) {
         supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
                 .replace(R.id.container, OutputFragment.newFragment(e.data as ArrayList))
                 .commit()
     }

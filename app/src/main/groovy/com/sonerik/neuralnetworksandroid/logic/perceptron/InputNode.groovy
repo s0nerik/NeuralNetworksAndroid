@@ -15,7 +15,7 @@ class InputNode extends Node {
 
     @Override
     double evaluate(List<Double> inputs) {
-        inputs[index]
+        return inputs[index]
     }
 
     @Override
@@ -30,7 +30,7 @@ class InputNode extends Node {
         outgoingEdges.each {
             it.target.getError(desiredValue)
         }
-        0d
+        return 0d
     }
 
 }

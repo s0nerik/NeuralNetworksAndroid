@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.support.annotation.Nullable
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,22 +37,20 @@ public class LoadInputFragment extends Fragment {
     }
 
     @Override
+    void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState)
+
+        def csv = new File(new File(Environment.externalStorageDirectory, "Download"), "variant_1.csv")
+        App.bus.post new InputLoadedEvent(input: parseCsv(csv))
+    }
+
+    @Override
     void onActivityResult(int requestCode, int resultCode, Intent intent) {
         List<List> tableData
 
         if (requestCode == 1337) {
             if (resultCode == Activity.RESULT_OK && intent) {
-                def csv = new File(intent.data?.path)?.readLines()?.collect { String it ->
-                    it.replaceAll(" ", "").split(",").toList()
-                }
-
-                tableData = csv
-
-                Log.d App.LOG_TAG, """
-                       |onActivityResult: ${requestCode}
-                       |data: ${intent.data}
-                       |csv: ${csv}
-                       """.stripMargin()
+                tableData = parseCsv(new File(intent.data?.path))
             } else {
                 tableData = Collections.nCopies(600, 0..6 as List)
             }
@@ -61,4 +58,13 @@ public class LoadInputFragment extends Fragment {
             App.bus.post new InputLoadedEvent(input: tableData)
         }
     }
+
+    private List<List> parseCsv(File file) {
+        def csv = file?.readLines()?.collect { String it ->
+            it.replaceAll(" ", "").split(",").toList()
+        }
+
+        return csv
+    }
+
 }
