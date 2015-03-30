@@ -93,9 +93,9 @@
     <orderEntry type="library" exported="" name="annotation-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="prefs-1.0.3" level="project" />
+    <orderEntry type="library" exported="" name="groovy-2.4.3-grooid" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.0.0" level="project" />
-    <orderEntry type="library" exported="" name="groovy-2.4.1-grooid" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="material-dialogs-0.6.5.2" level="project" />
     <orderEntry type="library" exported="" name="swissknife-1.2.2" level="project" />

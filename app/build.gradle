@@ -39,7 +39,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'org.codehaus.groovy:groovy:2.4.1:grooid'
+    compile 'org.codehaus.groovy:groovy:2.4.3:grooid'
     compile 'com.android.support:support-v4:22.0.0'
     compile 'com.arasthel:swissknife:1.2.2'
     compile 'com.android.support:recyclerview-v7:21.0.3'

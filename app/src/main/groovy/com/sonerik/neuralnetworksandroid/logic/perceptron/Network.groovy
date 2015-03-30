@@ -7,10 +7,9 @@ class Network {
 
     List<InputNode> inputNodes
     Node outputNode
+    List<Edge> edges = []
 
     double evaluate(List<Double> inputs) {
-        assert inputNodes.max {it.index}.index < inputs.size()
-
         outputNode.evaluate(inputs)
     }
 
@@ -21,6 +20,7 @@ class Network {
     }
 
     void updateWeights(double learningRate) {
+//        outputNode.updateWeights(learningRate)
         inputNodes.each {
             it.updateWeights(learningRate)
         }
@@ -29,18 +29,23 @@ class Network {
     int train(List<List<Double>> patterns, double learningRate = 0.115d, int maxEpochs = 10000, double maxError = 0.1d) {
         List<Double> outputs = []
         int epochsPassed = 0
-        while (epochsPassed < maxEpochs) {
-            patterns.each {
-                outputs << evaluate(it[0..-2])
-                propagateError(it[-1])
-                updateWeights(learningRate)
 
-                epochsPassed++
+        def inputs = patterns.collect { it[0..-2] }
+
+        assert inputNodes.max {it.index}.index < inputs.size()
+
+        while (epochsPassed < maxEpochs) {
+            patterns.eachWithIndex { List<Double> pattern, int i ->
+                outputs << evaluate(inputs[i])
+                propagateError(pattern[-1])
+                updateWeights(learningRate)
             }
+
+            epochsPassed++
 
 //            if (outputs.max() < maxError) break
 
-            outputs.clear()
+            outputs = []
         }
         return epochsPassed
     }
@@ -73,16 +78,16 @@ class Network {
             }
         }
 
-//        // Assign bias nodes as inputs for all hidden layers
-//        hiddenLayers.each { List<Node> nodes ->
-//            def biasNode = new BiasNode()
-//            nodes.each { Node node ->
-//                node.addBias(biasNode)
-//            }
-//        }
-//
-//        // Assign BiasNode as input for output node
-//        network.outputNode.addBias(new BiasNode())
+        // Assign bias nodes as inputs for all hidden layers
+        hiddenLayers.each { List<Node> nodes ->
+            def biasNode = new BiasNode()
+            nodes.each { Node node ->
+                node.addBias(biasNode)
+            }
+        }
+
+        // Assign BiasNode as input for output node
+        network.outputNode.addBias(new BiasNode())
 
         // Assign last hidden layer nodes as inputs for output node
         hiddenLayers[-1].each { new Edge(it, network.outputNode) }

@@ -20,16 +20,12 @@ class InputNode extends Node {
 
     @Override
     void updateWeights(double learningRate) {
-        outgoingEdges.each {
-            it.target.updateWeights(learningRate)
-        }
+        outgoingEdges.target*.updateWeights(learningRate)
     }
 
     @Override
     double getError(double desiredValue) {
-        outgoingEdges.each {
-            it.target.getError(desiredValue)
-        }
+        outgoingEdges.target*.getError(desiredValue)
         return 0d
     }
 
