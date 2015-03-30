@@ -7,23 +7,17 @@ class Network {
 
     List<InputNode> inputNodes
     Node outputNode
-    List<Edge> edges = []
 
     double evaluate(List<Double> inputs) {
         outputNode.evaluate(inputs)
     }
 
     void propagateError(double desired) {
-        inputNodes.each {
-            it.getError(desired)
-        }
+        inputNodes*.getError(desired)
     }
 
     void updateWeights(double learningRate) {
-//        outputNode.updateWeights(learningRate)
-        inputNodes.each {
-            it.updateWeights(learningRate)
-        }
+        inputNodes*.updateWeights(learningRate)
     }
 
     int train(List<List<Double>> patterns, double learningRate = 0.115d, int maxEpochs = 10000, double maxError = 0.1d) {
@@ -81,9 +75,7 @@ class Network {
         // Assign bias nodes as inputs for all hidden layers
         hiddenLayers.each { List<Node> nodes ->
             def biasNode = new BiasNode()
-            nodes.each { Node node ->
-                node.addBias(biasNode)
-            }
+            nodes*.addBias(biasNode)
         }
 
         // Assign BiasNode as input for output node
