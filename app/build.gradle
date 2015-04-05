@@ -52,7 +52,7 @@ dependencies {
     compile 'com.github.dmytrodanylyk.shadow-layout:library:1.0.2'
     compile 'com.jpardogo.materialtabstrip:library:1.0.9'
     compile 'com.afollestad:material-dialogs:0.6.5.2'
-    compile 'com.rengwuxian.materialedittext:library:2.0.0-SNAPSHOT'
+    compile 'com.rengwuxian.materialedittext:library:+'
     compile 'me.alexrs:prefs:1.0.3'
 }
 

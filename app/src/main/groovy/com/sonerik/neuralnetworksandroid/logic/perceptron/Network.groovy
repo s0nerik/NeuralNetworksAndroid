@@ -119,9 +119,9 @@ class Network {
             output << String.format(
                     "| %-72s | %-10.4f | %-10.4f | %-10.4f |",
                     it[0..-2].collect{ String.format("%-10.4f", it*factor) }.toString(),
-                    (network.evaluate(it[0..-2])),
-                    (it[-1] - network.evaluate(it[0..-2])),
-                    it[-1]
+                    (network.evaluate(it[0..-2]))*factor,
+                    (it[-1] - network.evaluate(it[0..-2]))*factor,
+                    it[-1]*factor
             )
         }
 

@@ -16,6 +16,10 @@ class Node {
         return 1.0d / (1.0d + Math.exp(-x))
     }
 
+    private static double activationFunctionDerivative(double x) {
+        return x * (1.0d - x)
+    }
+
     void addBias(BiasNode biasNode) {
         new Edge(biasNode, this)
     }
@@ -23,7 +27,7 @@ class Node {
     double evaluate(List<Double> inputs) {
         /* Run activation function on a weighted sum of all inputs. */
 
-//        if (lastOutput) return lastOutput
+        if (lastOutput) return lastOutput
 
         double weightedSum = 0d
 
@@ -42,16 +46,14 @@ class Node {
            output node, desiredValue will be used to compute the error. For an input node, we
            simply ignore the error. */
 
-//        if (error) return error
-
-        assert lastOutput
+        if (error) return error
 
         if (!outgoingEdges) { // Output node
             error = desiredValue - lastOutput
         } else { // Normal node
-            error = outgoingEdges.collect { // Weighted sum of all errors from nodes in next layer
+            error = outgoingEdges.sum { Edge it -> // Weighted sum of all errors from nodes in next layer
                 it.weight * it.target.getError(desiredValue)
-            }.sum() as double
+            } as double
         }
 
         return error
@@ -64,7 +66,7 @@ class Node {
 
         if (error && lastOutput) {
             incomingEdges.eachWithIndex { Edge edge, int i ->
-                edge.weight += learningRate * lastOutput * (1d - lastOutput) * error * lastInput[i]
+                edge.weight += learningRate * activationFunctionDerivative(lastOutput) * error * lastInput[i]
             }
 //            incomingEdges.each {
 //                it.source.updateWeights(learningRate)
