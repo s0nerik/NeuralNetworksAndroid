@@ -21,7 +21,7 @@ Network::Network(int numInputs, int numHiddenLayers, int numInEachLayer) {
     // Assign inputs to the first hidden layer
     for (auto inputNode : inputNodes) {
         for (auto node : hiddenLayers[0]) {
-            edges.push_back(std::make_shared<Edge>(Edge(inputNode, node)));
+            edges.push_back(new Edge(inputNode, node));
         }
     }
 
@@ -29,7 +29,7 @@ Network::Network(int numInputs, int numHiddenLayers, int numInEachLayer) {
     for (int i = 0; i < numHiddenLayers - 1; ++i) {
         for (auto node1 : hiddenLayers[i]) {
             for (auto node2 : hiddenLayers[i + 1]) {
-                edges.push_back(std::make_shared<Edge>(Edge(node1, node2)));
+                edges.push_back(new Edge(node1, node2));
             }
         }
     }
@@ -45,7 +45,7 @@ Network::Network(int numInputs, int numHiddenLayers, int numInEachLayer) {
 
     // Assign last hidden layer nodes as inputs for output node
     for (auto node : hiddenLayers[hiddenLayers.size() - 1]) {
-        edges.push_back(std::make_shared<Edge>(Edge(node, outputNode)));
+        edges.push_back(new Edge(node, outputNode));
     }
 }
 

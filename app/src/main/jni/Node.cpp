@@ -3,6 +3,16 @@
 #include "Node.h"
 #include "Edge.h"
 
+Node::~Node() {
+    for (auto edge : outgoingEdges) {
+        delete edge;
+    }
+
+    for (auto edge : incomingEdges) {
+        delete edge;
+    }
+}
+
 double Node::activationFunction(double x) {
     return 1.0 / (1.0 + exp(-x));
 }
@@ -14,10 +24,11 @@ double Node::activationFunctionDerivative(double x) {
 double Node::evaluate(std::vector<double> & inputs) {
     /* Run activation function on a weighted sum of all inputs. */
 
-    if (visited) return lastOutput;
+//    if (visited) return lastOutput;
 
     double weightedSum = 0;
 
+    lastInput.reserve(incomingEdges.size());
     int i = 0;
     for (auto edge : incomingEdges) {
         double theInput = edge->_source->evaluate(inputs);

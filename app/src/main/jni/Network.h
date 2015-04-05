@@ -8,7 +8,7 @@ class Network {
 
 public:
     std::vector<std::shared_ptr<InputNode>> inputNodes;
-    std::vector<std::shared_ptr<Edge>> edges;
+    std::vector<Edge*> edges;
     std::shared_ptr<Node> outputNode;
 
     Network(int numInputs, int numHiddenLayers, int numInEachLayer);

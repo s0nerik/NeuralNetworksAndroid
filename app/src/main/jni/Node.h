@@ -9,12 +9,14 @@ class Edge;
 class Node : public std::enable_shared_from_this<Node> {
 
 public:
-    std::vector<std::shared_ptr<Edge>> outgoingEdges;
-    std::vector<std::shared_ptr<Edge>> incomingEdges;
+    std::vector<Edge*> outgoingEdges;
+    std::vector<Edge*> incomingEdges;
     std::vector<double> lastInput;
     double lastOutput;
     double error;
     bool visited;
+
+    virtual ~Node();
 
     static double activationFunction(double x);
 
