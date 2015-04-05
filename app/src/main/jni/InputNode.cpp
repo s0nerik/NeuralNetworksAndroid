@@ -1,4 +1,5 @@
 #include "InputNode.h"
+#include "Edge.h"
 
 InputNode::InputNode(int index) {
     _index = index;
@@ -10,17 +11,13 @@ double InputNode::evaluate(std::vector<double>& inputs) {
 
 void InputNode::updateWeights(double learningRate) {
     for (auto edge : outgoingEdges) {
-        if (auto edgePtr = edge.lock()) {
-            edgePtr->_target->updateWeights(learningRate);
-        }
+        edge->_target->updateWeights(learningRate);
     }
 }
 
 double InputNode::getError(double desiredValue) {
     for (auto edge : outgoingEdges) {
-        if (auto edgePtr = edge.lock()) {
-            edgePtr->_target->getError(desiredValue);
-        }
+        edge->_target->getError(desiredValue);
     }
     return 0;
 }

@@ -2,13 +2,15 @@
 #define JNI_NODE_H
 
 #include <vector>
-#include "Edge.h"
+#include <memory>
+
+class Edge;
 
 class Node : public std::enable_shared_from_this<Node> {
 
 public:
-    std::vector<std::weak_ptr<Edge>> outgoingEdges;
-    std::vector<std::weak_ptr<Edge>> incomingEdges;
+    std::vector<std::shared_ptr<Edge>> outgoingEdges;
+    std::vector<std::shared_ptr<Edge>> incomingEdges;
     std::vector<double> lastInput;
     double lastOutput;
     double error;

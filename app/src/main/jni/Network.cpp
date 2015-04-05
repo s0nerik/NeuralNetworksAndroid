@@ -1,29 +1,27 @@
-#include <assert.h>
 #include <algorithm>
 #include "Network.h"
+#include "Edge.h"
 
 Network::Network(int numInputs, int numHiddenLayers, int numInEachLayer) {
-    outputNode = std::make_shared(new Node());
+    outputNode = std::make_shared<Node>(Node());
 
     // Create input nodes
     for (int i = 0; i < numInputs; ++i) {
-        inputNodes.push_back(std::make_shared(new InputNode(i)));
+        inputNodes.push_back(std::make_shared<InputNode>(InputNode(i)));
     }
 
     // Create nodes in hidden layers
-    std::vector<std::vector<std::weak_ptr<Node>>> hiddenLayers((unsigned long) numHiddenLayers);
+    std::vector<std::vector<std::shared_ptr<Node>>> hiddenLayers((unsigned long) numHiddenLayers);
     for (int i = 0; i < numHiddenLayers; ++i) {
         for (int j = 0; j < numInEachLayer; ++j) {
-            hiddenLayers[i].push_back(std::make_shared(new Node()));
+            hiddenLayers[i].push_back(std::make_shared<Node>(Node()));
         }
     }
 
     // Assign inputs to the first hidden layer
     for (auto inputNode : inputNodes) {
         for (auto node : hiddenLayers[0]) {
-            if (auto inputNodePtr = inputNode.lock()) {
-                edges.push_back(std::make_shared(new Edge(inputNodePtr, node)));
-            }
+            edges.push_back(std::make_shared<Edge>(Edge(inputNode, node)));
         }
     }
 
@@ -31,7 +29,7 @@ Network::Network(int numInputs, int numHiddenLayers, int numInEachLayer) {
     for (int i = 0; i < numHiddenLayers - 1; ++i) {
         for (auto node1 : hiddenLayers[i]) {
             for (auto node2 : hiddenLayers[i + 1]) {
-                edges.push_back(std::make_shared(new Edge(node1, node2)));
+                edges.push_back(std::make_shared<Edge>(Edge(node1, node2)));
             }
         }
     }
@@ -47,7 +45,7 @@ Network::Network(int numInputs, int numHiddenLayers, int numInEachLayer) {
 
     // Assign last hidden layer nodes as inputs for output node
     for (auto node : hiddenLayers[hiddenLayers.size() - 1]) {
-        edges.push_back(std::make_shared(new Edge(node, outputNode)));
+        edges.push_back(std::make_shared<Edge>(Edge(node, outputNode)));
     }
 }
 
@@ -57,17 +55,13 @@ double Network::evaluate(std::vector<double>& inputs) {
 
 void Network::propagateError(double desired) {
     for (auto node : inputNodes) {
-        if (auto nodePtr = node.lock()) {
-            nodePtr->getError(desired);
-        }
+        node->getError(desired);
     }
 }
 
 void Network::updateWeights(double learningRate) {
     for (auto node : inputNodes) {
-        if (auto nodePtr = node.lock()) {
-            nodePtr->updateWeights(learningRate);
-        }
+        node->updateWeights(learningRate);
     }
 }
 
@@ -79,9 +73,9 @@ int Network::train(std::vector<std::vector<double>>& inputs,
     std::vector<double> outputs;
     int epochsPassed = 0;
 
-    assert(std::max_element(inputNodes.begin(), inputNodes.end(), [](InputNode& node1, InputNode& node2) {
-        return node1._index < node2._index;
-    })->lock()->_index < inputs.size());
+//    assert(std::max_element(inputNodes.begin(), inputNodes.end(), [](InputNode& node1, InputNode& node2) {
+//        return node1._index < node2._index;
+//    })->_index < inputs.size());
 
     while (epochsPassed < maxEpochs) {
         for (int i = 0; i < inputs.size(); ++i) {

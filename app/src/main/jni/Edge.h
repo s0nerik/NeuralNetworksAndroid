@@ -2,8 +2,9 @@
 #define JNI_EDGE_H
 
 
-#include <bits/shared_ptr.h>
-#include "Node.h"
+#include <memory>
+
+class Node;
 
 class Edge : public std::enable_shared_from_this<Edge> {
 

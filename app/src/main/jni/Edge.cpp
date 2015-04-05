@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "Edge.h"
+#include "Node.h"
 
 Edge::Edge(std::shared_ptr<Node> source, std::shared_ptr<Node> target) {
     _source = source;

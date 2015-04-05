@@ -1,12 +1,13 @@
 #include <numeric>
 #include <cmath>
 #include "Node.h"
+#include "Edge.h"
 
-static double Node::activationFunction(double x) {
+double Node::activationFunction(double x) {
     return 1.0 / (1.0 + exp(-x));
 }
 
-static double Node::activationFunctionDerivative(double x) {
+double Node::activationFunctionDerivative(double x) {
     return x * (1.0 - x);
 }
 
@@ -19,11 +20,9 @@ double Node::evaluate(std::vector<double> & inputs) {
 
     int i = 0;
     for (auto edge : incomingEdges) {
-        if (auto edgePtr = edge.lock()) {
-            double theInput = edgePtr->_source->evaluate(inputs);
-            lastInput[i] = theInput;
-            weightedSum += edgePtr->_weight * theInput;
-        }
+        double theInput = edge->_source->evaluate(inputs);
+        lastInput[i] = theInput;
+        weightedSum += edge->_weight * theInput;
         i++;
     }
 
@@ -41,9 +40,13 @@ double Node::getError(double desiredValue) {
     if (outgoingEdges.size() == 0) { // Output node
         error = desiredValue - lastOutput;
     } else { // Normal node
-        error = std::accumulate(outgoingEdges.begin(), outgoingEdges.end(), 0, [](Edge& e1, Edge& e2) {
-            return e1._weight * e2._target->getError(desiredValue);
-        });
+        error = 0;
+        for (auto edge : outgoingEdges) {
+            error += edge->_weight * edge->_target->getError(desiredValue);
+        }
+//        error = std::accumulate(outgoingEdges.begin(), outgoingEdges.end(), (double) 0, [desiredValue](auto e1, auto e2) {
+//            return e1.lock()->_weight * e2.lock()->_target->getError(desiredValue);
+//        });
     }
 
     return error;
@@ -57,9 +60,7 @@ void Node::updateWeights(double learningRate) {
     if (!visited) {
         int i = 0;
         for (auto edge : incomingEdges) {
-            if (auto edgePtr = edge.lock()) {
-                edgePtr->_weight += learningRate * activationFunctionDerivative(lastOutput) * error * lastInput[i];
-            }
+            edge->_weight += learningRate * activationFunctionDerivative(lastOutput) * error * lastInput[i];
             i++;
         }
 //            incomingEdges.each {
@@ -67,9 +68,7 @@ void Node::updateWeights(double learningRate) {
 //            }
 
         for (auto edge : outgoingEdges) {
-            if (auto edgePtr = edge.lock()) {
-                edgePtr->_target->updateWeights(learningRate);
-            }
+            edge->_target->updateWeights(learningRate);
         }
 
         visited = true;

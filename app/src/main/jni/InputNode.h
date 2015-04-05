@@ -4,7 +4,7 @@
 
 #include "Node.h"
 
-class InputNode : Node {
+class InputNode : public Node {
 
 public:
     int _index;
