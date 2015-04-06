@@ -17,6 +17,8 @@ public:
 
     void propagateError(double desiredValue);
 
+    void updateWeights(double learningRate);
+
 };
 
 

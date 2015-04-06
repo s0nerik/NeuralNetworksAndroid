@@ -18,3 +18,9 @@ void Layer::propagateError(double desiredValue) {
         node->propagateError(desiredValue);
     }
 }
+
+void Layer::updateWeights(double learningRate) {
+    for (auto node : _nodes) {
+        node->updateWeights(learningRate);
+    }
+}
