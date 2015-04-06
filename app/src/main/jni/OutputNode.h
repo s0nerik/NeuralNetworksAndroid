@@ -7,7 +7,7 @@
 class OutputNode : public Node {
 
 public:
-    virtual double getError(double desiredValue) override;
+    virtual double propagateError(double desiredValue) override;
 
 };
 

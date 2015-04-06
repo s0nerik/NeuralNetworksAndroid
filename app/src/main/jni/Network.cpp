@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "Network.h"
 #include "Edge.h"
+#include "Layer.h"
 
 Network::Network(int numInputs, int numHiddenLayers, int numInEachLayer) {
     outputNode = std::make_shared<Node>(Node());
@@ -56,7 +57,7 @@ double Network::evaluate(std::vector<double>& inputs) {
 
 void Network::propagateError(double desired) {
     for (auto node : inputNodes) {
-        node->getError(desired);
+        node->propagateError(desired);
     }
 }
 

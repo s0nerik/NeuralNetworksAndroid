@@ -1,6 +1,6 @@
 #include "OutputNode.h"
 
-double OutputNode::getError(double desiredValue) {
-    error = desiredValue - lastOutput;
+double OutputNode::propagateError(double desiredValue) {
+    error = desiredValue - output;
     return error;
 }

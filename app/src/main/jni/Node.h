@@ -12,15 +12,8 @@ public:
     std::vector<Edge*> outgoingEdges;
     std::vector<Edge*> incomingEdges;
 
-    std::vector<double> lastInput;
-    double lastOutput;
-    double error;
-
-    bool shouldCalculateOutput = true;
-    bool shouldCalculateError = true;
-    bool shouldUpdateWeight = true;
-
-    bool visited;
+    double output;
+    double error = 0;
 
     virtual ~Node();
 
@@ -28,8 +21,8 @@ public:
 
     static double activationFunctionDerivative(double x);
 
-    virtual double evaluate(std::vector<double>& inputs);
-    virtual double getError(double desiredValue);
+    virtual void evaluate();
+    virtual double propagateError(double desiredValue);
     virtual void updateWeights(double learningRate);
 };
 

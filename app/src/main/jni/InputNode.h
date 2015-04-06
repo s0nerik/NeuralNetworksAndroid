@@ -7,17 +7,17 @@
 class InputNode : public Node {
 
 public:
-    int _index;
+    double _input;
 
     InputNode(){};
 
-    InputNode(int index);
+    InputNode(double input);
 
-    double evaluate(std::vector<double>& inputs) override;
+    void evaluate() override;
 
     void updateWeights(double learningRate) override;
 
-    double getError(double desiredValue) override;
+    double propagateError(double desiredValue) override;
 
 };
 
