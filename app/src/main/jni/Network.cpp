@@ -39,12 +39,12 @@ Network::Network(size_t numInputs, size_t numHiddenLayers, size_t numInEachLayer
 }
 
 double Network::evaluate(std::vector<double>& inputs) {
-    inputLayer->assignInputs(inputs);
+    inputLayer->evaluate(inputs);
 
     for (auto layer : hiddenLayers) {
-        layer->evaluate();
+        layer->evaluate(inputs);
     }
-    outputLayer->evaluate();
+    outputLayer->evaluate(inputs);
 
     // Assuming there's only one output.
     return outputLayer->_nodes[0]->output;

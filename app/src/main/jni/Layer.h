@@ -5,22 +5,21 @@
 #include <memory>
 #include "Node.h"
 
+template <class T>
 class Layer {
 
 public:
-    std::vector<std::shared_ptr<Node>> _nodes;
+    std::vector<std::shared_ptr<T>> _nodes;
 
     Layer(size_t numNodes);
 
-    void evaluate();
+    void evaluate(std::vector<double>& inputs);
 
     void calculateErrors(double desiredValue);
 
     void updateWeights(double learningRate);
 
     void connect(std::shared_ptr<Layer> other);
-
-    void assignInputs(std::vector<double>& inputs);
 
 };
 

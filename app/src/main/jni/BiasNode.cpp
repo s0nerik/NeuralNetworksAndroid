@@ -1,5 +1,5 @@
 #include "BiasNode.h"
 
-double BiasNode::evaluate(std::vector<double>& inputs) {
-    return 1;
+void BiasNode::evaluate(std::vector<double>& inputs) {
+    output = 1;
 }

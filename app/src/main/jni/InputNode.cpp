@@ -1,12 +1,12 @@
 #include "InputNode.h"
 #include "Edge.h"
 
-InputNode::InputNode(double input) {
-    _input = input;
+InputNode::InputNode(int index) {
+    _index = index;
 }
 
-void InputNode::evaluate() {
-    output = _input;
+void InputNode::evaluate(std::vector<double>& inputs) {
+    output = inputs[_index];
 }
 
 void InputNode::updateWeights(double learningRate) {}

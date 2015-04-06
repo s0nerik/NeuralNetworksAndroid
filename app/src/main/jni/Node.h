@@ -21,7 +21,7 @@ public:
 
     static double activationFunctionDerivative(double x);
 
-    virtual void evaluate();
+    virtual void evaluate(std::vector<double>& inputs);
     virtual void calculateError(double desiredValue);
     virtual void updateWeights(double learningRate);
 };

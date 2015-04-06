@@ -6,7 +6,7 @@
 
 class BiasNode : InputNode {
 
-    double evaluate(std::vector<double>& inputs);
+    void evaluate(std::vector<double>& inputs) override;
 
 };
 

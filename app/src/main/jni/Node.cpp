@@ -21,7 +21,7 @@ double Node::activationFunctionDerivative(double x) {
     return x * (1.0 - x);
 }
 
-void Node::evaluate() {
+void Node::evaluate(std::vector<double>& inputs) {
     /* Run activation function on a weighted sum of all inputs. */
 
     double weightedSum = 0;
