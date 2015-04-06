@@ -40,10 +40,6 @@ void Node::propagateError(double desiredValue) {
 }
 
 void Node::updateWeights(double learningRate) {
-    /* Update the weights of a node, and all of its successor nodes.
-       Assume self is not an InputNode. If the error, output, and
-       lastInput are null, then this node has already been updated. */
-
     for (auto edge : incomingEdges) {
         edge->_weight += learningRate * activationFunctionDerivative(output) * error * edge->_source->output;
     }
