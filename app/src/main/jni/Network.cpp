@@ -39,14 +39,21 @@ Network::Network(size_t numInputs, size_t numHiddenLayers, size_t numInEachLayer
 }
 
 double Network::evaluate(std::vector<double>& inputs) {
+    inputLayer->assignInputs(inputs);
 
-    return outputNode->evaluate(inputs);
+    for (auto layer : hiddenLayers) {
+        layer->evaluate();
+    }
+    outputLayer->evaluate();
+
+    // Assuming there's only one output.
+    return outputLayer->_nodes[0]->output;
 }
 
 void Network::propagateError(double desired) {
-    for (auto node : inputNodes) {
-        node->propagateError(desired);
-    }
+//    for (auto node : inputNodes) {
+//        node->calculateErrors(desired);
+//    }
 }
 
 void Network::updateWeights(double learningRate) {

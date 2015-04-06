@@ -14,9 +14,9 @@ void Layer::evaluate() {
     }
 }
 
-void Layer::propagateError(double desiredValue) {
+void Layer::calculateErrors(double desiredValue) {
     for (auto node : _nodes) {
-        node->propagateError(desiredValue);
+        node->calculateError(desiredValue);
     }
 }
 

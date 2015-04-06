@@ -15,7 +15,7 @@ public:
 
     void evaluate();
 
-    void propagateError(double desiredValue);
+    void calculateErrors(double desiredValue);
 
     void updateWeights(double learningRate);
 
