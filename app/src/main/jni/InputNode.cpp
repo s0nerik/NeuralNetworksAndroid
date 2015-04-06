@@ -15,6 +15,4 @@ void InputNode::updateWeights(double learningRate) {
     }
 }
 
-double InputNode::propagateError(double desiredValue) {
-    return 0;
-}
+void InputNode::propagateError(double desiredValue) {}

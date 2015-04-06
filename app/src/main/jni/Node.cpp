@@ -30,16 +30,13 @@ void Node::evaluate() {
     }
 
     output = activationFunction(weightedSum);
-    return output;
 }
 
-double Node::propagateError(double desiredValue) {
+void Node::propagateError(double desiredValue) {
     error = 0;
     for (auto edge : outgoingEdges) {
         error += edge->_weight * edge->_target->error;
     }
-
-    return error;
 }
 
 void Node::updateWeights(double learningRate) {

@@ -1,6 +1,6 @@
 #include "OutputNode.h"
 
-double OutputNode::propagateError(double desiredValue) {
+void OutputNode::propagateError(double desiredValue) {
     error = desiredValue - output;
     return error;
 }
