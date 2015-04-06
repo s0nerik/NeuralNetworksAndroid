@@ -9,10 +9,6 @@ void InputNode::evaluate() {
     output = _input;
 }
 
-void InputNode::updateWeights(double learningRate) {
-    for (auto edge : outgoingEdges) {
-        edge->_target->updateWeights(learningRate);
-    }
-}
+void InputNode::updateWeights(double learningRate) {}
 
 void InputNode::propagateError(double desiredValue) {}

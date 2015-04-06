@@ -44,16 +44,7 @@ void Node::updateWeights(double learningRate) {
        Assume self is not an InputNode. If the error, output, and
        lastInput are null, then this node has already been updated. */
 
-    int i = 0;
     for (auto edge : incomingEdges) {
-        edge->_weight += learningRate * activationFunctionDerivative(output) * error * lastInput[i];
-        i++;
-    }
-//            incomingEdges.each {
-//                it._source.updateWeights(learningRate)
-//            }
-
-    for (auto edge : outgoingEdges) {
-        edge->_target->updateWeights(learningRate);
+        edge->_weight += learningRate * activationFunctionDerivative(output) * error * edge->_source->output;
     }
 }
