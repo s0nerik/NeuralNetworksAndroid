@@ -39,6 +39,7 @@ Network::Network(size_t numInputs, size_t numHiddenLayers, size_t numInEachLayer
 }
 
 double Network::evaluate(std::vector<double>& inputs) {
+
     return outputNode->evaluate(inputs);
 }
 

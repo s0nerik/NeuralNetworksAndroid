@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "Layer.h"
 
 template <typename T>
@@ -33,5 +34,13 @@ void Layer::connect(std::shared_ptr<Layer> other) {
             source->outgoingEdges.push_back(edge);
             target->incomingEdges.push_back(edge);
         }
+    }
+}
+
+void Layer::assignInputs(std::vector<double>& inputs) {
+    assert(inputs.size() == _nodes.size());
+
+    for (int i = 0; i < inputs.size(); ++i) {
+        _nodes[i]->_input = inputs[i];
     }
 }

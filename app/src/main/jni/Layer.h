@@ -9,7 +9,7 @@ template <typename T>
 class Layer {
 
 public:
-    std::vector<std::shared_ptr<Node>> _nodes;
+    std::vector<std::shared_ptr<T>> _nodes;
 
     Layer(size_t numNodes);
 
@@ -20,6 +20,8 @@ public:
     void updateWeights(double learningRate);
 
     void connect(std::shared_ptr<Layer> other);
+
+    void assignInputs(std::vector<double>& inputs);
 
 };
 
