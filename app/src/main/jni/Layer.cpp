@@ -1,10 +1,10 @@
 #include <assert.h>
 #include "Layer.h"
 
-template <typename T>
-Layer<T>::Layer(size_t numNodes) {
+template <class T>
+Layer::Layer(size_t numNodes) {
     for (int i = 0; i < numNodes; ++i) {
-        _nodes.push_back(std::make_shared<T>(T()));
+        _nodes.push_back(std::make_shared<Node>(T()));
     }
 }
 
@@ -26,7 +26,6 @@ void Layer::updateWeights(double learningRate) {
     }
 }
 
-template <typename T>
 void Layer::connect(std::shared_ptr<Layer> other) {
     for (auto source : _nodes) {
         for (auto target : other->_nodes) {

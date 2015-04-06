@@ -17,7 +17,7 @@ public:
 
     void updateWeights(double learningRate) override;
 
-    void propagateError(double desiredValue) override;
+    void calculateError(double desiredValue) override;
 
 };
 

@@ -5,11 +5,10 @@
 #include <memory>
 #include "Node.h"
 
-template <typename T>
 class Layer {
 
 public:
-    std::vector<std::shared_ptr<T>> _nodes;
+    std::vector<std::shared_ptr<Node>> _nodes;
 
     Layer(size_t numNodes);
 

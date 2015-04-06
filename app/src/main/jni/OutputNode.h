@@ -7,7 +7,7 @@
 class OutputNode : public Node {
 
 public:
-    virtual void propagateError(double desiredValue) override;
+    virtual void calculateError(double desiredValue) override;
 
 };
 

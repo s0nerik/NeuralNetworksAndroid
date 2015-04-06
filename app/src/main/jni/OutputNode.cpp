@@ -1,5 +1,5 @@
 #include "OutputNode.h"
 
-void OutputNode::propagateError(double desiredValue) {
+void OutputNode::calculateError(double desiredValue) {
     error = desiredValue - output;
 }

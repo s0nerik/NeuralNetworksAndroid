@@ -22,7 +22,7 @@ public:
     static double activationFunctionDerivative(double x);
 
     virtual void evaluate();
-    virtual void propagateError(double desiredValue);
+    virtual void calculateError(double desiredValue);
     virtual void updateWeights(double learningRate);
 };
 

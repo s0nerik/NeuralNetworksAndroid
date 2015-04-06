@@ -7,14 +7,14 @@
 Network::Network(size_t numInputs, size_t numHiddenLayers, size_t numInEachLayer) {
 
     // Create input layer
-    inputLayer = std::make_shared(Layer<InputNode>(numInputs));
+    inputLayer = std::make_shared<Layer<InputNode>>(Layer<InputNode>(numInputs));
 
     // Create output layer
-    outputLayer = std::make_shared(Layer<OutputNode>(1));
+    outputLayer = std::make_shared<Layer<OutputNode>>(Layer<OutputNode>(1));
 
     // Create hidden layers
     for (int i = 0; i < numHiddenLayers; ++i) {
-        hiddenLayers.push_back(std::make_shared(Layer<Node>(numInEachLayer)));
+        hiddenLayers.push_back(std::make_shared<Layer<Node>>(Layer<Node>(numInEachLayer)));
     }
 
     // Connect input layer with first hidden layer
@@ -96,6 +96,7 @@ int Network::train(std::vector<std::vector<double>>& inputs,
 
     return epochsPassed;
 }
+
 
 std::vector<double> Network::test(std::vector<std::vector<double>> patterns,
                                   double learningRate,

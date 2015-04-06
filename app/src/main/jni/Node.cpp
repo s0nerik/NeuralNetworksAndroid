@@ -32,7 +32,7 @@ void Node::evaluate() {
     output = activationFunction(weightedSum);
 }
 
-void Node::propagateError(double desiredValue) {
+void Node::calculateError(double desiredValue) {
     error = 0;
     for (auto edge : outgoingEdges) {
         error += edge->_weight * edge->_target->error;
