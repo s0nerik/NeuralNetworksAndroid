@@ -4,37 +4,29 @@
 #include "Edge.h"
 #include "Layer.h"
 
-Network::Network(int numInputs, int numHiddenLayers, int numInEachLayer) {
-    outputNode = std::make_shared<Node>(Node());
+Network::Network(size_t numInputs, size_t numHiddenLayers, size_t numInEachLayer) {
 
-    // Create input nodes
-    for (int i = 0; i < numInputs; ++i) {
-        inputNodes.push_back(std::make_shared<InputNode>(InputNode(i)));
-    }
+    // Create input layer
+    inputLayer = std::make_shared(Layer<InputNode>(numInputs));
 
-    // Create nodes in hidden layers
-    std::vector<std::vector<std::shared_ptr<Node>>> hiddenLayers((unsigned long) numHiddenLayers);
+    // Create output layer
+    outputLayer = std::make_shared(Layer<OutputNode>(1));
+
+    // Create hidden layers
     for (int i = 0; i < numHiddenLayers; ++i) {
-        for (int j = 0; j < numInEachLayer; ++j) {
-            hiddenLayers[i].push_back(std::make_shared<Node>(Node()));
-        }
+        hiddenLayers.push_back(std::make_shared(Layer<Node>(numInEachLayer)));
     }
 
-    // Assign inputs to the first hidden layer
-    for (auto inputNode : inputNodes) {
-        for (auto node : hiddenLayers[0]) {
-            edges.push_back(new Edge(inputNode, node));
-        }
+    // Connect input layer with first hidden layer
+    inputLayer->connect(hiddenLayers[0]);
+
+    // Connect hidden layers
+    for (int i = 0; i < hiddenLayers.size() - 1; ++i) {
+        hiddenLayers[i]->connect(hiddenLayers[i + 1]);
     }
 
-    // Assign hidden layer nodes as inputs for other hidden layers
-    for (int i = 0; i < numHiddenLayers - 1; ++i) {
-        for (auto node1 : hiddenLayers[i]) {
-            for (auto node2 : hiddenLayers[i + 1]) {
-                edges.push_back(new Edge(node1, node2));
-            }
-        }
-    }
+    // Connect last hidden layer with output layer
+    hiddenLayers[hiddenLayers.size() - 1]->connect(outputLayer);
 
 //    // Assign bias nodes as inputs for all hidden layers
 //    hiddenLayers.each { List<Node> nodes ->
@@ -44,11 +36,6 @@ Network::Network(int numInputs, int numHiddenLayers, int numInEachLayer) {
 //
 //    // Assign BiasNode as input for output node
 //    network.outputNode.addBias(new BiasNode())
-
-    // Assign last hidden layer nodes as inputs for output node
-    for (auto node : hiddenLayers[hiddenLayers.size() - 1]) {
-        edges.push_back(new Edge(node, outputNode));
-    }
 }
 
 double Network::evaluate(std::vector<double>& inputs) {

@@ -3,15 +3,19 @@
 
 
 #include "InputNode.h"
+#include "Layer.h"
+#include "OutputNode.h"
 
 class Network {
 
 public:
-    std::vector<std::shared_ptr<InputNode>> inputNodes;
     std::vector<Edge*> edges;
-    std::shared_ptr<Node> outputNode;
 
-    Network(int numInputs, int numHiddenLayers, int numInEachLayer);
+    std::shared_ptr<Layer<InputNode>> inputLayer;
+    std::vector<std::shared_ptr<Layer<Node>>> hiddenLayers;
+    std::shared_ptr<Layer<OutputNode>> outputLayer;
+
+    Network(size_t numInputs, size_t numHiddenLayers, size_t numInEachLayer);
 
     double evaluate(std::vector<double>& inputs);
 

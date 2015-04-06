@@ -24,3 +24,14 @@ void Layer::updateWeights(double learningRate) {
         node->updateWeights(learningRate);
     }
 }
+
+template <typename T>
+void Layer::connect(std::shared_ptr<Layer> other) {
+    for (auto source : _nodes) {
+        for (auto target : other->_nodes) {
+            auto edge = std::make_shared<Edge>(Edge(source, target));
+            source->outgoingEdges.push_back(edge);
+            target->incomingEdges.push_back(edge);
+        }
+    }
+}

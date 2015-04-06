@@ -3,15 +3,15 @@
 #include "Node.h"
 #include "Edge.h"
 
-Node::~Node() {
-    for (auto edge : outgoingEdges) {
-        delete edge;
-    }
-
-    for (auto edge : incomingEdges) {
-        delete edge;
-    }
-}
+//Node::~Node() {
+//    for (auto edge : outgoingEdges) {
+//        delete edge;
+//    }
+//
+//    for (auto edge : incomingEdges) {
+//        delete edge;
+//    }
+//}
 
 double Node::activationFunction(double x) {
     return 1.0 / (1.0 + exp(-x));
