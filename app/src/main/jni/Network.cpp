@@ -61,9 +61,13 @@ void Network::propagateError(double desired) {
 }
 
 void Network::updateWeights(double learningRate) {
-    for (auto node : inputNodes) {
-        node->updateWeights(learningRate);
+    inputLayer->updateWeights(learningRate);
+
+    for (auto layer : hiddenLayers) {
+        layer->updateWeights(learningRate);
     }
+
+    outputLayer->updateWeights(learningRate);
 }
 
 int Network::train(std::vector<std::vector<double>>& inputs,
