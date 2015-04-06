@@ -51,9 +51,13 @@ double Network::evaluate(std::vector<double>& inputs) {
 }
 
 void Network::propagateError(double desired) {
-//    for (auto node : inputNodes) {
-//        node->calculateErrors(desired);
-//    }
+    outputLayer->calculateErrors(desired);
+
+    for (auto layer : hiddenLayers) {
+        layer->calculateErrors(desired);
+    }
+
+    inputLayer->calculateErrors(desired);
 }
 
 void Network::updateWeights(double learningRate) {
