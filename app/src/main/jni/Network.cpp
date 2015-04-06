@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <assert.h>
 #include "Network.h"
 #include "Edge.h"
 
@@ -136,7 +137,8 @@ std::vector<double> Network::test(std::vector<std::vector<double>> patterns,
 
     // Write output scaled to factor
     for (auto input : data.first) {
-        output.push_back((network.evaluate(input))*factor);
+        auto out = network.evaluate(input);
+        output.push_back(out * factor);
     }
 
 //        output << "Finished training. It took ${epochs} epochs."
@@ -157,7 +159,7 @@ std::pair<std::vector<std::vector<double>>, std::vector<double>> Network::separa
     // Create inputs vector
     std::vector<std::vector<double>> inputs;
     for (auto line : patterns) {
-        inputs.push_back(std::vector<double>(&line[0], &line[line.size() - 2]));
+        inputs.push_back(std::vector<double>(&line[0], &line[line.size() - 1]));
     }
 
     // Create expected outputs vector

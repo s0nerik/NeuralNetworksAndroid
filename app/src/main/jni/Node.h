@@ -11,9 +11,15 @@ class Node : public std::enable_shared_from_this<Node> {
 public:
     std::vector<Edge*> outgoingEdges;
     std::vector<Edge*> incomingEdges;
+
     std::vector<double> lastInput;
     double lastOutput;
     double error;
+
+    bool shouldCalculateOutput = true;
+    bool shouldCalculateError = true;
+    bool shouldUpdateWeight = true;
+
     bool visited;
 
     virtual ~Node();

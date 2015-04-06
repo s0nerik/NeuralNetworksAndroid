@@ -24,7 +24,7 @@ double Node::activationFunctionDerivative(double x) {
 double Node::evaluate(std::vector<double> & inputs) {
     /* Run activation function on a weighted sum of all inputs. */
 
-//    if (visited) return lastOutput;
+    if (!shouldCalculateOutput) return lastOutput;
 
     double weightedSum = 0;
 
@@ -37,6 +37,8 @@ double Node::evaluate(std::vector<double> & inputs) {
         i++;
     }
 
+    shouldCalculateOutput = false;
+
     lastOutput = activationFunction(weightedSum);
     return lastOutput;
 }
@@ -46,7 +48,7 @@ double Node::getError(double desiredValue) {
        output node, desiredValue will be used to compute the error. For an input node, we
        simply ignore the error. */
 
-    if (visited) return error;
+    if (!shouldCalculateError) return error;
 
     if (outgoingEdges.size() == 0) { // Output node
         error = desiredValue - lastOutput;
@@ -60,6 +62,8 @@ double Node::getError(double desiredValue) {
 //        });
     }
 
+    shouldCalculateError = false;
+
     return error;
 }
 
@@ -68,7 +72,7 @@ void Node::updateWeights(double learningRate) {
        Assume self is not an InputNode. If the error, lastOutput, and
        lastInput are null, then this node has already been updated. */
 
-    if (!visited) {
+    if (shouldUpdateWeight && !shouldCalculateOutput && !shouldCalculateError) {
         int i = 0;
         for (auto edge : incomingEdges) {
             edge->_weight += learningRate * activationFunctionDerivative(lastOutput) * error * lastInput[i];
@@ -82,6 +86,8 @@ void Node::updateWeights(double learningRate) {
             edge->_target->updateWeights(learningRate);
         }
 
-        visited = true;
+        shouldUpdateWeight = false;
+        shouldCalculateOutput = true;
+        shouldCalculateError = true;
     }
 }

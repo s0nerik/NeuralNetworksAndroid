@@ -29,7 +29,7 @@ public:
 
     static std::vector<double> test(std::vector<std::vector<double>> patterns,
                                     double learningRate = 0.115,
-                                    int maxEpochs = 100,
+                                    int maxEpochs = 10000,
                                     double maxError = 0.1,
                                     int hiddenLayers = 2,
                                     int nodesEachLayer = 6);
