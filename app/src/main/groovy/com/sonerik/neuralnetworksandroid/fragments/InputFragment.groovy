@@ -125,7 +125,7 @@ public class InputFragment extends Fragment {
                 trainingSets,
                 expected,
                 prefs.getInt("maxEpochs", 10000),
-                prefs.getFloat("maxError", 0.001f) / factor,
+                prefs.getFloat("maxError", 0.01f) / factor,
                 prefs.getFloat("learningRate", 0.15f) as double,
                 prefs.getFloat("momentum", 0.5f) as double,
         )

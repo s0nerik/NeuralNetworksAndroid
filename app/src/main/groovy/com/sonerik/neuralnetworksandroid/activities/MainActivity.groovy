@@ -55,11 +55,12 @@ public class MainActivity extends FragmentActivity {
                     def view = layoutInflater.inflate(R.layout.dialog_settings, null)
 
                     def defaults = [
-                            learningRate: 0.115d,
-                            maxError: 1.0d,
-                            maxEpochs: 100i,
-                            hiddenLayers: 2i,
-                            nodesEachLayer: 6i
+                            learningRate: 0.15d,
+                            maxError: "0.01",
+                            maxEpochs: 10000i,
+                            hiddenLayers: 1i,
+                            nodesEachLayer: 6i,
+                            momentum: 0.5d
                     ]
 
                     def prefs = Prefs.with(applicationContext as Context)
@@ -71,7 +72,7 @@ public class MainActivity extends FragmentActivity {
 
                     new MaterialDialog.Builder(this)
                             .title("Settings")
-                            .customView(view)
+                            .customView(view, true)
                             .positiveText(android.R.string.ok)
                             .negativeText(android.R.string.cancel)
                             .callback(new MaterialDialog.ButtonCallback() {

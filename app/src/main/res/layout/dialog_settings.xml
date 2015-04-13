@@ -40,4 +40,11 @@
         android:hint="Nodes in each layer"
         app:met_floatingLabel="normal" />
 
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/settings_momentum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Momentum"
+        app:met_floatingLabel="normal" />
+
 </LinearLayout>
