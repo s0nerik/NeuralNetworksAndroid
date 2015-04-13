@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.arasthel.swissknife.SwissKnife
 import com.arasthel.swissknife.annotations.InjectView
+import com.arasthel.swissknife.annotations.OnBackground
 import com.arasthel.swissknife.annotations.OnClick
 import com.arasthel.swissknife.annotations.OnUIThread
 import com.software.shell.fab.ActionButton
@@ -82,18 +83,15 @@ public class InputFragment extends Fragment {
         data = data.collectNested { double it -> it / factor }
 
         List<List> inputs = data.collect { it[0..-2] }
-
         List<List> expectedOutputs = data.collect { it[-1..-1] }
 
         testNetwork inputs, expectedOutputs, factor
     }
 
-//    @OnBackground
-    @OnUIThread
+    @OnBackground
     void testNetwork(List<List> inputs, List<List> expectedOutputs, double factor) {
         def prefs = Prefs.with(activity)
 
-        System.loadLibrary("NetworkTrainer")
         NetworkTrainer t = new NetworkTrainer();
 
         def trainingSets = new VectorOfVectorOfDouble();

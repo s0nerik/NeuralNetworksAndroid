@@ -11,7 +11,7 @@ public class App extends Application {
 
     static Bus bus
 
-//    static { System.loadLibrary("NetworkTrainer") }
+    static { System.loadLibrary("NetworkTrainer") }
 
     @Override
     void onCreate() {
