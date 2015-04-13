@@ -47,6 +47,14 @@ public class NetworkTrainer {
     return new LearningResult(neural_networkJNI.NetworkTrainer_trainNetwork__SWIG_2(swigCPtr, this, VectorOfUnsigned.getCPtr(topology), topology, VectorOfVectorOfDouble.getCPtr(trainingSets), trainingSets, VectorOfVectorOfDouble.getCPtr(expectedOutputs), expectedOutputs, maxEpochs, acceptableError), true);
   }
 
+  public void delCallback() {
+    neural_networkJNI.NetworkTrainer_delCallback(swigCPtr, this);
+  }
+
+  public void setCallback(Callback cb) {
+    neural_networkJNI.NetworkTrainer_setCallback(swigCPtr, this, Callback.getCPtr(cb), cb);
+  }
+
   public NetworkTrainer() {
     this(neural_networkJNI.new_NetworkTrainer(), true);
   }

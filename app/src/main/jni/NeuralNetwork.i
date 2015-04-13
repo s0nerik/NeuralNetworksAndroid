@@ -1,6 +1,7 @@
-%module neural_network
+%module(directors="1") neural_network
 
 %{
+#include "Callback.h"
 #include "NetworkTrainer.h"
 #include "LearningResult.h"
 %}
@@ -13,5 +14,8 @@ namespace std {
    %template(VectorOfVectorOfDouble) vector<vector<double>>;
 }
 
+%feature("director") Callback;
+
+%include "Callback.h"
 %include "NetworkTrainer.h"
 %include "LearningResult.h"

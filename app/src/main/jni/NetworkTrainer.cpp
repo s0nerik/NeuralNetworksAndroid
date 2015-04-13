@@ -35,8 +35,14 @@ LearningResult NetworkTrainer::trainNetwork(
             trainingSetIndex++;
         }
 
+        auto recentAverageError = net.getRecentAverageError();
+
+        if ( _callback && (epoch % 100 == 0) ) {
+            _callback->epochPassed(epoch, recentAverageError);
+        }
+
         // If average error is acceptable we can stop learning
-        if (net.getRecentAverageError() <= acceptableError) {
+        if (recentAverageError <= acceptableError) {
             break;
         }
     }

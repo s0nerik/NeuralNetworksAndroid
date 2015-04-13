@@ -2,6 +2,7 @@
 #define NEURALNETBACKPROP_NETWORKTRAINER_H
 
 #include <vector>
+#include "Callback.h"
 
 struct LearningResult;
 
@@ -16,6 +17,13 @@ public:
             double learningRate = 0.15,
             double momentum = 0.5
     );
+
+    ~NetworkTrainer() { delCallback(); }
+    void delCallback() { delete _callback; _callback = 0; }
+    void setCallback(Callback *cb) { delCallback(); _callback = cb; }
+
+private:
+    Callback *_callback = 0;
 };
 
 

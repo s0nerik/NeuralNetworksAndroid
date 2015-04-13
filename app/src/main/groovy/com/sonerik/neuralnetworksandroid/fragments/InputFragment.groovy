@@ -16,6 +16,7 @@ import com.software.shell.fab.ActionButton
 import com.sonerik.neuralnetworksandroid.App
 import com.sonerik.neuralnetworksandroid.R
 import com.sonerik.neuralnetworksandroid.events.NetworkStudyOver
+import com.sonerik.neuralnetworksandroid.ndk.Callback
 import com.sonerik.neuralnetworksandroid.ndk.NetworkTrainer
 import com.sonerik.neuralnetworksandroid.ndk.VectorOfDouble
 import com.sonerik.neuralnetworksandroid.ndk.VectorOfUnsigned
@@ -93,6 +94,7 @@ public class InputFragment extends Fragment {
         def prefs = Prefs.with(activity)
 
         NetworkTrainer t = new NetworkTrainer();
+        t.setCallback(new LearningProgressCallback())
 
         def trainingSets = new VectorOfVectorOfDouble();
         inputs.each {
@@ -145,6 +147,13 @@ public class InputFragment extends Fragment {
         }
 
         networkTestFinished()
+    }
+
+    class LearningProgressCallback extends Callback {
+        @Override
+        void epochPassed(int epoch, double recentAverageError) {
+            Log.d(App.LOG_TAG, "Epoch: ${epoch}, avg error: ${recentAverageError}")
+        }
     }
 
     @OnUIThread
