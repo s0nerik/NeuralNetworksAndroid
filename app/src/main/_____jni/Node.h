@@ -6,7 +6,7 @@
 
 class Edge;
 
-class Node : public std::enable_shared_from_this<Node> {
+class Node {
 
 public:
     std::vector<std::shared_ptr<Edge>> outgoingEdges;

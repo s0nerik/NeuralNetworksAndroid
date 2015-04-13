@@ -24,6 +24,13 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+
+        ndk {
+            moduleName "NetworkTrainer" // Name of C++ module (i.e. libSeePlusPlus)
+            cFlags "-std=c++11 -fexceptions" // Add provisions to allow C++11 functionality
+            stl "gnustl_shared" // Which STL library to use: gnustl or stlport
+        }
+
     }
     buildTypes {
         release {

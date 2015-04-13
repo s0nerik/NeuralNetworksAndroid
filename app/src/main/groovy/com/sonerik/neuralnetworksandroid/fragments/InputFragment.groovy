@@ -9,14 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.arasthel.swissknife.SwissKnife
 import com.arasthel.swissknife.annotations.InjectView
-import com.arasthel.swissknife.annotations.OnBackground
 import com.arasthel.swissknife.annotations.OnClick
 import com.arasthel.swissknife.annotations.OnUIThread
 import com.software.shell.fab.ActionButton
 import com.sonerik.neuralnetworksandroid.App
 import com.sonerik.neuralnetworksandroid.R
 import com.sonerik.neuralnetworksandroid.events.NetworkStudyOver
-import com.sonerik.neuralnetworksandroid.logic.perceptron.Network
+import com.sonerik.neuralnetworksandroid.ndk.NetworkTrainer
+import com.sonerik.neuralnetworksandroid.ndk.VectorOfDouble
+import com.sonerik.neuralnetworksandroid.ndk.VectorOfUnsigned
+import com.sonerik.neuralnetworksandroid.ndk.VectorOfVectorOfDouble
 import groovy.transform.CompileStatic
 import me.alexrs.prefs.lib.Prefs
 
@@ -75,27 +77,75 @@ public class InputFragment extends Fragment {
     void onFabClicked() {
         Log.d App.LOG_TAG, "Let's learn!"
 
-        def data = tableData[1..-1].collect { List it ->
-            it.collect { s ->
-                s as double
-            }
-        }
+        List<List> data = tableData[1..-1].collectNested { it as double }
+        def factor = data.flatten().max() as double
+        data = data.collectNested { double it -> it / factor }
 
-        testNetwork data
+        List<List> inputs = data.collect { it[0..-2] }
+
+        List<List> expectedOutputs = data.collect { it[-1..-1] }
+
+        testNetwork inputs, expectedOutputs, factor
     }
 
-    @OnBackground
-    void testNetwork(List<List<Double>> input) {
+//    @OnBackground
+    @OnUIThread
+    void testNetwork(List<List> inputs, List<List> expectedOutputs, double factor) {
         def prefs = Prefs.with(activity)
-        Network.test(input,
-                prefs.getFloat("learningRate", 0.115f) as double,
-                prefs.getInt("maxEpochs", 100),
-                prefs.getFloat("maxError", 1.0f) as double,
-                prefs.getInt("hiddenLayers", 2i),
-                prefs.getInt("nodesEachLayer", 6i)
-        ).each {
-            Log.d App.LOG_TAG, it
+
+        System.loadLibrary("NetworkTrainer")
+        NetworkTrainer t = new NetworkTrainer();
+
+        def trainingSets = new VectorOfVectorOfDouble();
+        inputs.each {
+            def set = new VectorOfDouble();
+            it.each {
+                set.add(it as double)
+            }
+            trainingSets.add(set);
         }
+
+        def expected = new VectorOfVectorOfDouble();
+        expectedOutputs.each {
+            def set = new VectorOfDouble();
+            it.each {
+                set.add(it as double)
+            }
+            expected.add(set);
+        }
+
+        def hiddenLayers = prefs.getInt("hiddenLayers", 1)
+        def nodesEachLayer = prefs.getInt("nodesEachLayer", 6)
+
+        def top = [inputs[0].size(), *([nodesEachLayer] * hiddenLayers), expectedOutputs[0].size()]
+
+        def topology = new VectorOfUnsigned();
+        top.each { topology.add(it as long) }
+
+        def result = t.trainNetwork(
+                topology,
+                trainingSets,
+                expected,
+                prefs.getInt("maxEpochs", 10000),
+                prefs.getFloat("maxError", 0.001f) / factor,
+                prefs.getFloat("learningRate", 0.15f) as double,
+                prefs.getFloat("momentum", 0.5f) as double,
+        )
+
+        def avgError = result.averageError;
+        def epochsPassed = result.epochsPassed;
+
+        def outputs = []
+
+        for (int i = 0; i < result.trainingSetOutputs.size(); i++) {
+            def set = result.trainingSetOutputs.get(i)
+            def line = []
+            for (int j = 0; j < set.size(); j++) {
+                line << set.get(j)
+            }
+            outputs << line
+        }
+
         networkTestFinished()
     }
 
