@@ -9,16 +9,18 @@ import groovy.transform.CompileStatic
 @CompileStatic
 public class OutputPagerAdapter extends FragmentPagerAdapter {
 
-    List table
+    List outputTable
+    List inputTable
 
     List fragments
 
-    OutputPagerAdapter(FragmentManager fm, List table) {
+    OutputPagerAdapter(FragmentManager fm, List inputTable, List outputTable) {
         super(fm)
-        this.table = table
+        this.inputTable = inputTable
+        this.outputTable = outputTable
         fragments = [
-                TableFragment.newFragment(table as ArrayList),
-                new Fragment(),
+                TableFragment.newFragment(inputTable as ArrayList),
+                TableFragment.newFragment(outputTable as ArrayList),
                 new Fragment()
         ]
     }
@@ -37,9 +39,9 @@ public class OutputPagerAdapter extends FragmentPagerAdapter {
     CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "Result table"
+                return "Input table"
             case 1:
-                return "Statistics"
+                return "Result table"
             case 2:
                 return "Chart"
         }

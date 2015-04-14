@@ -181,7 +181,7 @@ public class InputFragment extends Fragment {
     void networkTestFinished(List table) {
         Log.d App.LOG_TAG, "networkTestFinished"
         fragmentManager.beginTransaction().remove(fragmentManager.findFragmentByTag("progress")).commit();
-        App.bus.post new NetworkStudyOverEvent(data: table)
+        App.bus.post new NetworkStudyOverEvent(inputTable: tableData, outputTable: table)
     }
 
 }

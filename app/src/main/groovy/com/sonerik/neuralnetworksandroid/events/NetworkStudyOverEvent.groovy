@@ -4,5 +4,6 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 class NetworkStudyOverEvent {
-    List data
+    List inputTable
+    List outputTable
 }

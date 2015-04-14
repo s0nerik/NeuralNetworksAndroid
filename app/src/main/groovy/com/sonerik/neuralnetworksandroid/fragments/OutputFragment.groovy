@@ -1,18 +1,14 @@
 package com.sonerik.neuralnetworksandroid.fragments
-
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arasthel.swissknife.SwissKnife
 import com.arasthel.swissknife.annotations.InjectView
-import com.arasthel.swissknife.annotations.OnClick
 import com.astuetz.PagerSlidingTabStrip
-import com.sonerik.neuralnetworksandroid.App
 import com.sonerik.neuralnetworksandroid.R
 import com.sonerik.neuralnetworksandroid.adapters.OutputPagerAdapter
 import groovy.transform.CompileStatic
@@ -20,7 +16,8 @@ import groovy.transform.CompileStatic
 @CompileStatic
 public class OutputFragment extends Fragment {
 
-    List tableData
+    List inputTable
+    List outputTable
 
     @InjectView(R.id.tabs)
     PagerSlidingTabStrip tabs
@@ -28,10 +25,11 @@ public class OutputFragment extends Fragment {
     @InjectView(R.id.pager)
     ViewPager pager
 
-    static OutputFragment newFragment(ArrayList<List> table) {
+    static OutputFragment newFragment(ArrayList<List> inputTable, ArrayList<List> outputTable) {
         def fragment = new OutputFragment()
         def bundle = new Bundle()
-        bundle.putSerializable "table", table
+        bundle.putSerializable "inputTable", inputTable
+        bundle.putSerializable "outputTable", outputTable
         fragment.arguments = bundle
         return fragment
     }
@@ -39,7 +37,8 @@ public class OutputFragment extends Fragment {
     @Override
     void onCreate(Bundle savedInstanceState) {
         super.onCreate savedInstanceState
-        tableData = arguments.getSerializable("table") as List
+        inputTable = arguments.getSerializable("inputTable") as List
+        outputTable = arguments.getSerializable("outputTable") as List
     }
 
     @Override
@@ -54,8 +53,9 @@ public class OutputFragment extends Fragment {
     @Override
     void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated view, savedInstanceState
-        def adapter = new OutputPagerAdapter(childFragmentManager, tableData)
+        def adapter = new OutputPagerAdapter(childFragmentManager, inputTable, outputTable)
         pager.adapter = adapter
         tabs.viewPager = pager
+        pager.setCurrentItem(1, true)
     }
 }
