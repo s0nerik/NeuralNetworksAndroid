@@ -81,8 +81,8 @@ public class InputFragment extends Fragment {
         def factor = data.flatten().max() as double
         data = data.collectNested { double it -> it / factor }
 
-        List<List> inputs = data.collect { it[0..-2] }
-        List<List> expectedOutputs = data.collect { it[-1..-1] }
+        List<List<Double>> inputs = data.collect { it[0..-2] as List<Double> }
+        List<List<Double>> expectedOutputs = data.collect { it[-1..-1] as List<Double> }
 
         fragmentManager.beginTransaction().add(android.R.id.content, new LearningProgressFragment(), "progress").commit();
 
@@ -90,7 +90,7 @@ public class InputFragment extends Fragment {
     }
 
     @OnBackground
-    void testNetwork(List<List> inputs, List<List> expectedOutputs, double factor) {
+    void testNetwork(List<List<Double>> inputs, List<List<Double>> expectedOutputs, double factor) {
         def prefs = Prefs.with(activity)
 
         NetworkTrainer t = new NetworkTrainer();
@@ -135,7 +135,7 @@ public class InputFragment extends Fragment {
         def avgError = result.averageError;
         def epochsPassed = result.epochsPassed;
 
-        def outputs = []
+        List<List<Double>> outputs = []
 
         for (int i = 0; i < result.trainingSetOutputs.size(); i++) {
             def set = result.trainingSetOutputs.get(i)
@@ -146,7 +146,20 @@ public class InputFragment extends Fragment {
             outputs << line
         }
 
-        networkTestFinished()
+        def resultsTable = []
+        resultsTable[0] = ["#", "Expected", "Got", "Error", "Correctness", "Status"]
+        for (int i = 0; i < outputs.size(); i++) {
+            double error = Math.abs(outputs[i][0] * factor - expectedOutputs[i][0] * factor)
+            def correctPercent = 100d - Math.abs(1d - Math.abs((outputs[i][0] * factor) / (expectedOutputs[i][0] * factor))) * 100d
+            resultsTable << [i,
+                             String.format("%7.3f", expectedOutputs[i][0] * factor),
+                             String.format("%7.3f", outputs[i][0] * factor),
+                             String.format("%7.3f", error),
+                             "${String.format("%6.3f", correctPercent)}%",
+                             correctPercent >= 95? "OK" : "WRONG" ]
+        }
+
+        networkTestFinished(resultsTable)
     }
 
     private class LearningProgressCallback extends Callback {
@@ -165,10 +178,10 @@ public class InputFragment extends Fragment {
     }
 
     @OnUIThread
-    void networkTestFinished() {
+    void networkTestFinished(List table) {
         Log.d App.LOG_TAG, "networkTestFinished"
         fragmentManager.beginTransaction().remove(fragmentManager.findFragmentByTag("progress")).commit();
-        App.bus.post new NetworkStudyOverEvent(data: tableData)
+        App.bus.post new NetworkStudyOverEvent(data: table)
     }
 
 }

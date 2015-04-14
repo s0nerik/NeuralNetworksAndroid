@@ -35,7 +35,7 @@ public class TableAdapter extends RecyclerView.Adapter<ViewHolder> {
     void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.items.eachWithIndex { TextView item, index ->
             if (index < width) {
-                item.setText(rows[i][index].toString())
+                item.text = rows[i][index].toString()
                 item.visibility = View.VISIBLE
             } else {
                 item.visibility = View.GONE

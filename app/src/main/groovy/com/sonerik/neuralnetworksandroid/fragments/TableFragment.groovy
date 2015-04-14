@@ -14,8 +14,8 @@ import com.arasthel.swissknife.SwissKnife
 import com.arasthel.swissknife.annotations.InjectView
 import com.sonerik.neuralnetworksandroid.R
 import com.sonerik.neuralnetworksandroid.adapters.TableAdapter
-import com.sonerik.neuralnetworksandroid.parcelables.TableParcelable
 import groovy.transform.CompileStatic
+import me.grantland.widget.AutofitHelper
 
 @CompileStatic
 public class TableFragment extends Fragment {
@@ -48,6 +48,11 @@ public class TableFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState)
         def v = inflater.inflate(R.layout.fragment_table, container, false)
         SwissKnife.inject(this, v)
+
+        tableTitles.children.each { View textView ->
+            AutofitHelper.create(textView as TextView);
+        }
+
         return v
     }
 

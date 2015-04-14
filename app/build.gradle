@@ -64,6 +64,7 @@ dependencies {
     compile 'me.alexrs:prefs:1.0.3'
 
     compile 'com.sefford:circular-progress-drawable:1.31@aar'
+    compile 'me.grantland:autofittextview:0.2.+'
 }
 
 //// add support for Groovy to existing configurations
