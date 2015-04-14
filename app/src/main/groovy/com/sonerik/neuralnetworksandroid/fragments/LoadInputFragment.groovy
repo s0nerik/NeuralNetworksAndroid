@@ -20,8 +20,7 @@ import groovy.transform.CompileStatic
 public class LoadInputFragment extends Fragment {
 
     @Override
-    View onCreateView(LayoutInflater inflater,
-                      @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView inflater, container, savedInstanceState
         def v = inflater.inflate R.layout.fragment_load_input, container, false
         SwissKnife.inject this, v

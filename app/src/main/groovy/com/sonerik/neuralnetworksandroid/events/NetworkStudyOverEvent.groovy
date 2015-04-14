@@ -3,6 +3,6 @@ package com.sonerik.neuralnetworksandroid.events
 import groovy.transform.CompileStatic
 
 @CompileStatic
-class NetworkStudyOver {
+class NetworkStudyOverEvent {
     List data
 }

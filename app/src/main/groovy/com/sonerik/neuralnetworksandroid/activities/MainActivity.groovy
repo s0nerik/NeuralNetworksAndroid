@@ -11,7 +11,7 @@ import com.arasthel.swissknife.annotations.InjectView
 import com.sonerik.neuralnetworksandroid.App
 import com.sonerik.neuralnetworksandroid.R
 import com.sonerik.neuralnetworksandroid.events.InputLoadedEvent
-import com.sonerik.neuralnetworksandroid.events.NetworkStudyOver
+import com.sonerik.neuralnetworksandroid.events.NetworkStudyOverEvent
 import com.sonerik.neuralnetworksandroid.fragments.InputFragment
 import com.sonerik.neuralnetworksandroid.fragments.LoadInputFragment
 import com.sonerik.neuralnetworksandroid.fragments.OutputFragment
@@ -109,7 +109,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     @Subscribe
-    void onStudyOver(NetworkStudyOver e) {
+    void onStudyOver(NetworkStudyOverEvent e) {
         supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
                 .replace(R.id.container, OutputFragment.newFragment(e.data as ArrayList))

@@ -37,7 +37,7 @@ LearningResult NetworkTrainer::trainNetwork(
 
         auto recentAverageError = net.getRecentAverageError();
 
-        if ( _callback && (epoch % 100 == 0) ) {
+        if ( _callback && (epoch % 500 == 0) ) {
             _callback->epochPassed(epoch, recentAverageError);
         }
 

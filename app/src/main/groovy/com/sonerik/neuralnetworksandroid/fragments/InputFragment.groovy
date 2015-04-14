@@ -1,4 +1,5 @@
 package com.sonerik.neuralnetworksandroid.fragments
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.Nullable
@@ -15,12 +16,9 @@ import com.arasthel.swissknife.annotations.OnUIThread
 import com.software.shell.fab.ActionButton
 import com.sonerik.neuralnetworksandroid.App
 import com.sonerik.neuralnetworksandroid.R
-import com.sonerik.neuralnetworksandroid.events.NetworkStudyOver
-import com.sonerik.neuralnetworksandroid.ndk.Callback
-import com.sonerik.neuralnetworksandroid.ndk.NetworkTrainer
-import com.sonerik.neuralnetworksandroid.ndk.VectorOfDouble
-import com.sonerik.neuralnetworksandroid.ndk.VectorOfUnsigned
-import com.sonerik.neuralnetworksandroid.ndk.VectorOfVectorOfDouble
+import com.sonerik.neuralnetworksandroid.events.NetworkStudyOverEvent
+import com.sonerik.neuralnetworksandroid.events.NetworkStudyProgressEvent
+import com.sonerik.neuralnetworksandroid.ndk.*
 import groovy.transform.CompileStatic
 import me.alexrs.prefs.lib.Prefs
 
@@ -86,6 +84,8 @@ public class InputFragment extends Fragment {
         List<List> inputs = data.collect { it[0..-2] }
         List<List> expectedOutputs = data.collect { it[-1..-1] }
 
+        fragmentManager.beginTransaction().add(android.R.id.content, new LearningProgressFragment(), "progress").commit();
+
         testNetwork inputs, expectedOutputs, factor
     }
 
@@ -149,17 +149,26 @@ public class InputFragment extends Fragment {
         networkTestFinished()
     }
 
-    class LearningProgressCallback extends Callback {
+    private class LearningProgressCallback extends Callback {
+        int maxEpochs = Prefs.with(activity as Context).getInt("maxEpochs", 10000)
+
         @Override
         void epochPassed(int epoch, double recentAverageError) {
             Log.d(App.LOG_TAG, "Epoch: ${epoch}, avg error: ${recentAverageError}")
+            postUpdateEvent(epoch, recentAverageError, maxEpochs)
         }
+    }
+
+    @OnUIThread
+    void postUpdateEvent(int epoch, double recentAverageError, int maxEpochs) {
+        App.bus.post(new NetworkStudyProgressEvent(epochsPassed: epoch, averageError: recentAverageError, maxEpochs: maxEpochs))
     }
 
     @OnUIThread
     void networkTestFinished() {
         Log.d App.LOG_TAG, "networkTestFinished"
-        App.bus.post new NetworkStudyOver(data: tableData)
+        fragmentManager.beginTransaction().remove(fragmentManager.findFragmentByTag("progress")).commit();
+        App.bus.post new NetworkStudyOverEvent(data: tableData)
     }
 
 }

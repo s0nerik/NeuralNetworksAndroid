@@ -45,6 +45,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.pnikosis:materialish-progress:1.5'
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'org.codehaus.groovy:groovy:2.4.3:grooid'
     compile 'com.android.support:support-v4:22.0.0'
@@ -61,6 +62,8 @@ dependencies {
     compile 'com.afollestad:material-dialogs:0.6.5.2'
     compile 'com.rengwuxian.materialedittext:library:+'
     compile 'me.alexrs:prefs:1.0.3'
+
+    compile 'com.sefford:circular-progress-drawable:1.31@aar'
 }
 
 //// add support for Groovy to existing configurations
