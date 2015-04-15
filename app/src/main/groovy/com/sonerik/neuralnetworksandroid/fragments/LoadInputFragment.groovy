@@ -39,8 +39,8 @@ public class LoadInputFragment extends Fragment {
     void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState)
 
-        def csv = new File(new File(Environment.externalStorageDirectory, "Download"), "variant_1.csv")
-        App.bus.post new InputLoadedEvent(input: parseCsv(csv))
+//        def csv = new File(new File(Environment.externalStorageDirectory, "Download"), "variant_1.csv")
+//        App.bus.post new InputLoadedEvent(input: parseCsv(csv))
     }
 
     @Override

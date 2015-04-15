@@ -82,7 +82,7 @@ public class ChartFragment extends Fragment {
 
         // set the line to be drawn like this "- - - - - -"
         if (dashed) set.enableDashedLine(10f, 5f, 0f);
-        set.drawCircles = false
+        set.drawCircles = true
         set.setColor(color);
         set.setCircleColor(color);
         set.setLineWidth(1f);
