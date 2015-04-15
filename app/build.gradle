@@ -12,6 +12,7 @@ project.androidGroovy {
 repositories {
     maven { url 'http://raw.github.com/wada811/Android-Material-Design-Colors/master/repository/' }
     maven { url 'https://oss.sonatype.org/content/groups/public' }
+    maven { url "https://jitpack.io" }
 }
 
 android {
@@ -65,6 +66,8 @@ dependencies {
 
     compile 'com.sefford:circular-progress-drawable:1.31@aar'
     compile 'me.grantland:autofittextview:0.2.+'
+
+    compile 'com.github.PhilJay:MPAndroidChart:v2.0.9'
 }
 
 //// add support for Groovy to existing configurations

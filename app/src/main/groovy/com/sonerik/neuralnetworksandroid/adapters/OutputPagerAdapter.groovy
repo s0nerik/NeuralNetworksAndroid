@@ -3,6 +3,7 @@ package com.sonerik.neuralnetworksandroid.adapters
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import com.sonerik.neuralnetworksandroid.fragments.ChartFragment
 import com.sonerik.neuralnetworksandroid.fragments.TableFragment
 import groovy.transform.CompileStatic
 
@@ -14,14 +15,17 @@ public class OutputPagerAdapter extends FragmentPagerAdapter {
 
     List fragments
 
-    OutputPagerAdapter(FragmentManager fm, List inputTable, List outputTable) {
+    OutputPagerAdapter(FragmentManager fm, List<List> inputTable, List<List> outputTable) {
         super(fm)
         this.inputTable = inputTable
         this.outputTable = outputTable
         fragments = [
                 TableFragment.newFragment(inputTable as ArrayList),
                 TableFragment.newFragment(outputTable as ArrayList),
-                new Fragment()
+                ChartFragment.newFragment(
+                        outputTable[1..-1].collect { it[1] } as ArrayList,
+                        outputTable[1..-1].collect { it[2] } as ArrayList
+                )
         ]
     }
 
