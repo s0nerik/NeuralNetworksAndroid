@@ -104,6 +104,7 @@ public class MainActivity extends FragmentActivity {
     @Subscribe
     void onInputLoaded(InputLoadedEvent e) {
         supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
                 .replace(R.id.container, InputFragment.newFragment(e.input as ArrayList))
                 .commit()
     }
