@@ -1,28 +1,24 @@
 package com.sonerik.neuralnetworksandroid.fragments
-
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.arasthel.swissknife.SwissKnife
 import com.arasthel.swissknife.annotations.InjectView
 import com.sefford.circularprogressdrawable.CircularProgressDrawable
 import com.sonerik.neuralnetworksandroid.App
 import com.sonerik.neuralnetworksandroid.R
-import com.sonerik.neuralnetworksandroid.events.NetworkStudyProgressEvent
-import com.squareup.otto.Subscribe
 import groovy.transform.CompileStatic
 
 @CompileStatic
 public class LearningProgressFragment extends Fragment {
 
-    @InjectView(R.id.txt_epochs_passed)
-    TextView txtEpochsPassed
-    @InjectView(R.id.txt_average_error)
-    TextView txtAverageError
+//    @InjectView(R.id.txt_epochs_passed)
+//    TextView txtEpochsPassed
+//    @InjectView(R.id.txt_average_error)
+//    TextView txtAverageError
     @InjectView(R.id.progress_view)
     View progressView
 
@@ -58,11 +54,11 @@ public class LearningProgressFragment extends Fragment {
         App.bus.unregister(this)
     }
 
-    @Subscribe
-    void onProgressUpdate(NetworkStudyProgressEvent e) {
-        progressDrawable.progress = (e.epochsPassed / (double) e.maxEpochs) as float
-        txtEpochsPassed.text = String.format("%d/%d", e.epochsPassed, e.maxEpochs)
-        txtAverageError.text = String.format("%.10f", e.averageError)
-    }
+//    @Subscribe
+//    void onProgressUpdate(NetworkStudyProgressEvent e) {
+//        progressDrawable.progress = (e.epochsPassed / (double) e.maxEpochs) as float
+//        txtEpochsPassed.text = String.format("%d/%d", e.epochsPassed, e.maxEpochs)
+//        txtAverageError.text = String.format("%.10f", e.averageError)
+//    }
 
 }

@@ -18,6 +18,7 @@ import com.sonerik.neuralnetworksandroid.App
 import com.sonerik.neuralnetworksandroid.R
 import com.sonerik.neuralnetworksandroid.events.NetworkStudyOverEvent
 import com.sonerik.neuralnetworksandroid.events.NetworkStudyProgressEvent
+import com.sonerik.neuralnetworksandroid.logic.perceptron.Network
 import com.sonerik.neuralnetworksandroid.ndk.*
 import groovy.transform.CompileStatic
 import me.alexrs.prefs.lib.Prefs
@@ -78,82 +79,30 @@ public class InputFragment extends Fragment {
         Log.d App.LOG_TAG, "Let's learn!"
 
         List<List> data = tableData[1..-1].collectNested { it as double }
-        def factor = data.flatten().max() as double
-        data = data.collectNested { double it -> it / factor }
 
         List<List<Double>> inputs = data.collect { it[0..-2] as List<Double> }
-        List<List<Double>> expectedOutputs = data.collect { it[-1..-1] as List<Double> }
+        List<Double> expectedOutputs = data.collect { it[-1] as Double }
 
         fragmentManager.beginTransaction().add(android.R.id.content, new LearningProgressFragment(), "progress").commit();
 
-        testNetwork inputs, expectedOutputs, factor
+        testNetwork inputs, expectedOutputs
     }
 
     @OnBackground
-    void testNetwork(List<List<Double>> inputs, List<List<Double>> expectedOutputs, double factor) {
+    void testNetwork(List<List<Double>> inputs, List<Double> expectedOutputs) {
         def prefs = Prefs.with(activity)
 
-        NetworkTrainer t = new NetworkTrainer();
-        t.setCallback(new LearningProgressCallback())
-
-        def trainingSets = new VectorOfVectorOfDouble();
-        inputs.each {
-            def set = new VectorOfDouble();
-            it.each {
-                set.add(it as double)
-            }
-            trainingSets.add(set);
-        }
-
-        def expected = new VectorOfVectorOfDouble();
-        expectedOutputs.each {
-            def set = new VectorOfDouble();
-            it.each {
-                set.add(it as double)
-            }
-            expected.add(set);
-        }
-
-        def hiddenLayers = prefs.getInt("hiddenLayers", 1)
-        def nodesEachLayer = prefs.getInt("nodesEachLayer", 6)
-
-        def top = [inputs[0].size(), *([nodesEachLayer] * hiddenLayers), expectedOutputs[0].size()]
-
-        def topology = new VectorOfUnsigned();
-        top.each { topology.add(it as long) }
-
-        def result = t.trainNetwork(
-                topology,
-                trainingSets,
-                expected,
-                prefs.getInt("maxEpochs", 10000),
-                prefs.getFloat("maxError", 0.01f) / factor,
-                prefs.getFloat("learningRate", 0.15f) as double,
-                prefs.getFloat("momentum", 0.5f) as double,
-        )
-
-        def avgError = result.averageError;
-        def epochsPassed = result.epochsPassed;
-
-        List<List<Double>> outputs = []
-
-        for (int i = 0; i < result.trainingSetOutputs.size(); i++) {
-            def set = result.trainingSetOutputs.get(i)
-            def line = []
-            for (int j = 0; j < set.size(); j++) {
-                line << set.get(j)
-            }
-            outputs << line
-        }
+        def network = Network.make(inputs as double[][], inputs.size(), 1d)
+        def outputs = network.study(expectedOutputs as double[])
 
         def resultsTable = []
         resultsTable[0] = ["#", "Expected", "Got", "Error", "Correctness", "Status"]
         for (int i = 0; i < outputs.size(); i++) {
-            double error = Math.abs(outputs[i][0] * factor - expectedOutputs[i][0] * factor)
-            def correctPercent = 100d - Math.abs(1d - Math.abs((outputs[i][0] * factor) / (expectedOutputs[i][0] * factor))) * 100d
+            double error = Math.abs(outputs[i] - expectedOutputs[i])
+            def correctPercent = 100d - Math.abs(1d - Math.abs((outputs[i]) / (expectedOutputs[i]))) * 100d
             resultsTable << [i,
-                             String.format("%7.3f", expectedOutputs[i][0] * factor),
-                             String.format("%7.3f", outputs[i][0] * factor),
+                             String.format("%7.3f", expectedOutputs[i]),
+                             String.format("%7.3f", outputs[i]),
                              String.format("%7.3f", error),
                              "${String.format("%6.3f", correctPercent)}%",
                              correctPercent >= 95? "OK" : "WRONG" ]

@@ -68,6 +68,8 @@ dependencies {
     compile 'me.grantland:autofittextview:0.2.+'
 
     compile 'com.github.PhilJay:MPAndroidChart:v2.0.9'
+
+    compile 'org.la4j:la4j:0.5.5'
 }
 
 //// add support for Groovy to existing configurations
